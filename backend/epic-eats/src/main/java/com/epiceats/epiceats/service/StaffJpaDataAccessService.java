@@ -30,12 +30,17 @@ public class StaffJpaDataAccessService implements StaffDao {
     }
 
     @Override
-    public Staff insertStaff(Staff staff) {
-        return staffRepository.save(staff);
+    public void insertStaff(Staff staff) {
+        staffRepository.save(staff);
     }
 
     @Override
     public boolean existsStaffWithEmail(String email) {
         return staffRepository.existsStaffByEmail(email);
+    }
+
+    @Override
+    public void updateStaff(Staff staff) {
+        staffRepository.save(staff);
     }
 }

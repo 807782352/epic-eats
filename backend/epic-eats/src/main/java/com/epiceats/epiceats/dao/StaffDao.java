@@ -11,8 +11,10 @@ public interface StaffDao {
 
     Optional<Staff> selectStaffById(Long id);
 
-    Staff insertStaff(Staff staff);
+    void insertStaff(Staff staff);
 
     boolean existsStaffWithEmail(String email);
+
+    void updateStaff(Staff staff);
 
 }

@@ -6,6 +6,7 @@ public record StaffRequest(
         String password,
         String email,
         String phone,
-        Integer role
+        Integer role,
+        Boolean activate
 ) {
 }

@@ -35,13 +35,33 @@ public class StaffController {
     }
 
     @PostMapping()
-    public Result<Integer> addStaff(@RequestBody StaffRequest staffRequest){
+    public Result<String> addStaff(@RequestBody StaffRequest staffRequest){
         try {
             staffService.addStaff(staffRequest);
-            return Result.success(1);
+            return Result.success("Add Staff Successfully!");
         } catch (Exception e) {
             return Result.error(e.getMessage());
         }
     }
 
+    @PutMapping("/{staffId}")
+    public Result<String> updateStaff(@PathVariable("staffId") Long staffId,
+                                      @RequestBody StaffRequest staffRequest) {
+        try {
+            staffService.updateStaff(staffId, staffRequest);
+            return Result.success("Update Staff Successfully!");
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{staffId}")
+    public Result<String> switchStaffActivate(@PathVariable("staffId") Long staffId) {
+        try {
+            staffService.switchStaffActivity(staffId);
+            return Result.success("Switch Staff's Activity Successfully!");
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
 }

@@ -14,7 +14,8 @@ import java.time.ZonedDateTime;
 public class Staff {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "staff_id_seq", sequenceName = "staff_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "staff_id_seq")
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +34,7 @@ public class Staff {
     private String email;
 
     @Column(nullable = false)
-    private Integer activate;
+    private Boolean activate;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime createTime;
