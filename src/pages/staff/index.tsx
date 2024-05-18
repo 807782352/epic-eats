@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../utils/theme";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { mockDataTeam } from "../../data/mockData";
@@ -35,6 +35,27 @@ const Staff = () => {
       align: "left",
     },
     { field: "phone", headerName: "Phone", flex: 1 },
+    {
+      field: "activate",
+      headerName: "Activate",
+      renderCell: ({ value }) => (
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          p={0.5}
+          borderRadius={1}
+          sx={{
+            backgroundColor:
+              value === 1 ? colors.greenAccent[500] : colors.grey[500],
+            margin: "10px 0 ",
+          }}
+        >
+          <Typography>{value === 1 ? "yes" : "no"}</Typography>
+        </Box>
+      ),
+    },
     {
       field: "access",
       headerName: "Access Level",
@@ -77,6 +98,54 @@ const Staff = () => {
         );
       },
     },
+    {
+      field: "operations",
+      headerName: "Operations",
+      flex: 1,
+      sortable: false,
+      renderCell: () => (
+        <Box display="flex" alignItems="center" justifyContent="space-between" gap={2}>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderColor: colors.greenAccent[700],
+              borderWidth: "2px",
+              "&:hover": {
+                backgroundColor: colors.greenAccent[500],
+                borderColor: colors.greenAccent[500],
+                boxShadow: "none",
+                ".MuiTypography-root": {
+                  // Hover will also change the color of the typography below
+                  color: colors.grey[900],
+                },
+              },
+            }}
+          >
+            <Typography color={colors.greenAccent[700]}>EDIT</Typography>
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{
+              borderColor: colors.redAccent[700],
+              borderWidth: "2px",
+              "&:hover": {
+                backgroundColor: colors.redAccent[500],
+                borderColor: colors.redAccent[500],
+                boxShadow: "none",
+                ".MuiTypography-root": {
+                  // Hover will also change the color of the typography below
+                  color: colors.grey[900],
+                },
+              },
+            }}
+          >
+            <Typography color={colors.redAccent[900]}>DELETE</Typography>
+          </Button>
+        </Box>
+      ),
+    },
   ];
 
   return (
@@ -97,11 +166,11 @@ const Staff = () => {
             },
             "& .first-name-column": {
               color: colors.greenAccent[800],
-              fontWeight: "bold"
+              fontWeight: "bold",
             },
             "& .last-name-column": {
               color: colors.greenAccent[800],
-              fontWeight: "bold"
+              fontWeight: "bold",
             },
             "& .MuiDataGrid-columnHeader": {
               backgroundColor: colors.primary[200],
