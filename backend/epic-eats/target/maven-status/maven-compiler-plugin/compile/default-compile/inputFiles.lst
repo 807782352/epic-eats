@@ -1,0 +1,12 @@
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\dao\StaffRepository.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\entity\Staff.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\exception\RequestValidationException.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\dao\StaffDao.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\dto\StaffRequest.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\utils\Result.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\service\StaffJpaDataAccessService.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\service\StaffService.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\EpicEatsApplication.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\exception\DuplicateResourceException.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\controller\StaffController.java
+D:\vs_workspace\epic-eats\backend\epic-eats\src\main\java\com\epiceats\epiceats\exception\StaffNotFoundException.java
