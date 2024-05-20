@@ -1,4 +1,14 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { tokens } from "../../utils/theme";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 // import { mockDataTeam } from "../../data/mockData";
@@ -20,6 +30,19 @@ const Staff = () => {
   const [staffData, setStaffData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // used for Dialog
+  const [open, setOpen] = useState(false);
+  // const [selectedStaffId, setSelectedStaffId] = useState(null);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    // setSelectedStaffId(id);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    // setSelectedStaffId(null);
+  };
 
   const fetchStaffs = () => {
     setIsLoading(true);
@@ -46,8 +69,9 @@ const Staff = () => {
   const handleActivate = async (id) => {
     try {
       await patchStaffActivateById(id);
-      fetchStaffs();
       toast.success("Status updated successfully!");
+      handleClose();
+      fetchStaffs();
     } catch (error) {
       toast.error("Failed to update status!");
     }
@@ -75,7 +99,7 @@ const Staff = () => {
     //   headerAlign: "left",
     //   align: "left",
     // },
-    { field: "phone", headerName: "Phone", flex: 1 },
+    { field: "phone", headerName: "Phone" },
     {
       field: "activate",
       headerName: "Activate",
@@ -100,7 +124,7 @@ const Staff = () => {
     {
       field: "role",
       headerName: "Access Level",
-      flex: 1,
+      flex: 2,
       renderCell: ({ value }) => {
         let cellColor;
         switch (value) {
@@ -144,7 +168,7 @@ const Staff = () => {
     {
       field: "operations",
       headerName: "Operations",
-      flex: 1,
+      flex: 2,
       sortable: false,
       renderCell: ({ row: { activate, id } }) => {
         return (
@@ -178,9 +202,7 @@ const Staff = () => {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => {
-                handleActivate(id);
-              }}
+              onClick={() => handleClickOpen(id)}
               sx={{
                 borderColor: colors.redAccent[700],
                 borderWidth: "2px",
@@ -199,6 +221,65 @@ const Staff = () => {
                 {activate ? "SUSPEND" : "ACTIVATE"}
               </Typography>
             </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle
+                id="alert-dialog-title"
+                sx={{
+                  backgroundColor: colors.primary[400],
+                }}
+              >
+                <Typography variant="h3">
+                  {"Activate / Suspend Staff"}
+                </Typography>
+              </DialogTitle>
+              <DialogContent
+                sx={{
+                  backgroundColor: colors.primary[400],
+                }}
+              >
+                <DialogContentText
+                  id="alert-dialog-description"
+                  sx={{
+                    color: colors.grey[800],
+                    paddingTop: 2,
+                  }}
+                >
+                  <Typography variant="h5">
+                    Are you sure you want to{" "}
+                    {activate ? "SUSPEND" : "ACTIVATE"} this staff
+                    member?
+                  </Typography>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions
+                sx={{
+                  backgroundColor: colors.primary[400],
+                }}
+              >
+                <Button
+                  onClick={handleClose}
+                  sx={{
+                    color: colors.grey[900],
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => handleActivate(id)}
+                  autoFocus
+                  sx={{
+                    color: colors.grey[900],
+                  }}
+                >
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         );
       },

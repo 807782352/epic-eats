@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="699e94db-1967-406b-9022-fbefc32de7e1" name="Default Changelist" comment="" />
+    <list default="true" id="699e94db-1967-406b-9022-fbefc32de7e1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../frontend/cms/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/cms/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/cms/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/cms/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/cms/src/pages/form/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/cms/src/pages/form/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/cms/src/pages/staff/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/cms/src/pages/staff/index.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,10 +38,22 @@
       <updated>1716042827849</updated>
       <workItem from="1716042829134" duration="87000" />
       <workItem from="1716043523197" duration="23000" />
+      <workItem from="1716217434900" duration="23000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

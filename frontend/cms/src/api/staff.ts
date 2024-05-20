@@ -16,3 +16,8 @@ export const getStaffById = async (id) => {
 export const patchStaffActivateById = async (id) => {
   return await axios.patch(`${rootUrl}/api/v1/staff/${id}`);
 };
+
+export const addStaff = async (data) => {
+  const res = await axios.post(`${rootUrl}/api/v1/staff`, data);
+  return res.data;
+};
