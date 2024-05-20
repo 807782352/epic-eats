@@ -33,15 +33,15 @@ const Staff = () => {
 
   // used for Dialog
   const [open, setOpen] = useState(false);
-  // const [selectedStaffId, setSelectedStaffId] = useState(null);
+  const [selectedStaffId, setSelectedStaffId] = useState(null);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
     setOpen(true);
-    // setSelectedStaffId(id);
+    setSelectedStaffId(id);
   };
   const handleClose = () => {
     setOpen(false);
-    // setSelectedStaffId(null);
+    setSelectedStaffId(null);
   };
 
   const fetchStaffs = () => {
@@ -221,65 +221,6 @@ const Staff = () => {
                 {activate ? "SUSPEND" : "ACTIVATE"}
               </Typography>
             </Button>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle
-                id="alert-dialog-title"
-                sx={{
-                  backgroundColor: colors.primary[400],
-                }}
-              >
-                <Typography variant="h3">
-                  {"Activate / Suspend Staff"}
-                </Typography>
-              </DialogTitle>
-              <DialogContent
-                sx={{
-                  backgroundColor: colors.primary[400],
-                }}
-              >
-                <DialogContentText
-                  id="alert-dialog-description"
-                  sx={{
-                    color: colors.grey[800],
-                    paddingTop: 2,
-                  }}
-                >
-                  <Typography variant="h5">
-                    Are you sure you want to{" "}
-                    {activate ? "SUSPEND" : "ACTIVATE"} this staff
-                    member?
-                  </Typography>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions
-                sx={{
-                  backgroundColor: colors.primary[400],
-                }}
-              >
-                <Button
-                  onClick={handleClose}
-                  sx={{
-                    color: colors.grey[900],
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => handleActivate(id)}
-                  autoFocus
-                  sx={{
-                    color: colors.grey[900],
-                  }}
-                >
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
           </Box>
         );
       },
@@ -334,6 +275,83 @@ const Staff = () => {
           pageSizeOptions={[5, 10, 25, 50]}
         />
       </Box>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(1px)",
+            },
+          },
+        }}
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <Typography variant="h3">{"Activate / Suspend Staff"}</Typography>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{
+              color: colors.grey[800],
+              paddingTop: 2,
+            }}
+          >
+            <Typography variant="h5">
+              Are you sure you want to{" "}
+              {selectedStaffId &&
+              staffData.find((staff) => staff.id === selectedStaffId)?.activate
+                ? "SUSPEND"
+                : "ACTIVATE"}{" "}
+              [
+              {
+                staffData.find((staff) => staff.id === selectedStaffId)
+                  ?.firstName
+              }{" "}
+              {
+                staffData.find((staff) => staff.id === selectedStaffId)
+                  ?.lastName
+              }
+              ] ?
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: colors.grey[900],
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleActivate(selectedStaffId)}
+            autoFocus
+            sx={{
+              color: colors.grey[900],
+            }}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
