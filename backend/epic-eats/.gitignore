@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.pem
+*.ppk
 
 ### STS ###
 .apt_generated

@@ -1,5 +1,6 @@
 package com.epiceats.epiceats.dao;
 
+import com.epiceats.epiceats.dto.StaffResponse;
 import com.epiceats.epiceats.entity.Staff;
 
 import java.util.List;

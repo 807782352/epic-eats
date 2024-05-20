@@ -1,7 +1,10 @@
 package com.epiceats.epiceats.service;
 
+import com.epiceats.epiceats.dao.RoleRepository;
 import com.epiceats.epiceats.dao.StaffDao;
 import com.epiceats.epiceats.dto.StaffRequest;
+import com.epiceats.epiceats.dto.StaffResponse;
+import com.epiceats.epiceats.entity.Role;
 import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.exception.DuplicateResourceException;
 import com.epiceats.epiceats.exception.RequestValidationException;
@@ -13,25 +16,38 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StaffService {
 
     private final StaffDao staffDao;
 
+    private final RoleRepository roleRepository;
 
-    public StaffService(@Qualifier("jpa") StaffDao staffDao) {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public StaffService(@Qualifier("jpa") StaffDao staffDao, RoleRepository roleRepository) {
         this.staffDao = staffDao;
+        this.roleRepository = roleRepository;
     }
 
-    public List<Staff> getAllStaffs(){
-        return staffDao.selectAllStaffs();
+    public List<StaffResponse> getAllStaffResponses(){
+
+        return staffDao.selectAllStaffs().stream()
+                .map(this::mapToStaffResponse)
+                .collect(Collectors.toList());
     }
 
     public Staff getStaffById(Long id){
         return staffDao.selectStaffById(id).orElseThrow(
                 () -> new StaffNotFoundException("Member with id [%s] is not found".formatted(id))
         );
+    }
+
+    public StaffResponse getStaffResponseById(Long id){
+        Staff staff = getStaffById(id);
+        return mapToStaffResponse(staff);
     }
 
     public void addStaff(StaffRequest staffRequest) {
@@ -47,6 +63,14 @@ public class StaffService {
         newStaff.setActivate(true);
         newStaff.setCreateTime(ZonedDateTime.now());
         newStaff.setUpdateTime(ZonedDateTime.now());
+        System.out.println(newStaff);
+
+
+        Role roleId = roleRepository.findById(staffRequest.roleId())
+                .orElseThrow(() -> new StaffNotFoundException("Role with id " + staffRequest.roleId() + " not found"));
+        System.out.println(roleId);
+        newStaff.setRoleId(roleId);
+        System.out.println(newStaff);
         staffDao.insertStaff(newStaff);
     }
 
@@ -76,9 +100,11 @@ public class StaffService {
             isChange = true;
             curStaff.setPhone(staffRequest.phone());
         }
-        if (staffRequest.role() != null && !staffRequest.role().equals(curStaff.getRole())){
+        if (staffRequest.roleId() != null && !staffRequest.roleId().equals(curStaff.getRoleId().getId())){
             isChange = true;
-            curStaff.setRole(staffRequest.role());
+            Role roleId = roleRepository.findById(staffRequest.roleId())
+                    .orElseThrow(() -> new StaffNotFoundException("Role with id " + staffRequest.roleId() + " not found"));
+            curStaff.setRoleId(roleId);
         }
         if (staffRequest.activate() != null && !staffRequest.activate().equals(curStaff.getActivate())){
             isChange = true;
@@ -101,6 +127,21 @@ public class StaffService {
         }
 
         curStaff.setActivate(!curStaff.getActivate());
+        curStaff.setUpdateTime(ZonedDateTime.now());
         staffDao.updateStaff(curStaff);
+    }
+
+    private StaffResponse mapToStaffResponse(Staff staff) {
+        return new StaffResponse(
+                staff.getId(),
+                staff.getFirstName(),
+                staff.getLastName(),
+                staff.getPhone(),
+                staff.getEmail(),
+                staff.getActivate(),
+                staff.getCreateTime().format(formatter),
+                staff.getUpdateTime().format(formatter),
+                staff.getRoleId().getRole()
+        );
     }
 }

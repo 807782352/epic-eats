@@ -42,7 +42,8 @@ public class Staff {
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime updateTime;
 
-    @Column(nullable = false)
-    private Integer role;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role roleId;
 
 }

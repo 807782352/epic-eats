@@ -10,6 +10,8 @@ import Category from "./pages/category";
 import Order from "./pages/order";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import Form from "./pages/form";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -51,6 +53,17 @@ function App() {
           </main>
         </div>
       </ThemeProvider>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </ColorModeContext.Provider>
   );
 }

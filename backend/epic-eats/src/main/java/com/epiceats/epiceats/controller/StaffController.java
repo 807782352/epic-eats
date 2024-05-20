@@ -1,7 +1,7 @@
 package com.epiceats.epiceats.controller;
 
 import com.epiceats.epiceats.dto.StaffRequest;
-import com.epiceats.epiceats.entity.Staff;
+import com.epiceats.epiceats.dto.StaffResponse;
 import com.epiceats.epiceats.service.StaffService;
 import com.epiceats.epiceats.utils.Result;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +19,16 @@ public class StaffController {
     }
 
     @GetMapping()
-    public Result<List<Staff>> getStaffs() {
-        List<Staff> data = staffService.getAllStaffs();
+    public Result<List<StaffResponse>> getStaffs() {
+        List<StaffResponse> data = staffService.getAllStaffResponses();
         return Result.success(data);
     }
 
     @GetMapping("/{staffId}")
-    public Result<Staff> getStaffyId(@PathVariable("staffId") Long memberId) {
+    public Result<StaffResponse> getStaffyId(@PathVariable("staffId") Long memberId) {
         try {
-            Staff staff = staffService.getStaffById(memberId);
-            return Result.success(staff);
+            StaffResponse staffResponse = staffService.getStaffResponseById(memberId);
+            return Result.success(staffResponse);
         } catch (Exception e) {
             return Result.error(e.getMessage());
         }
