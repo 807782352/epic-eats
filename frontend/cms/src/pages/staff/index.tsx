@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Drawer,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -22,6 +23,7 @@ import { getStaffs, patchStaffActivateById } from "../../api/staff";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
 import { toast } from "react-toastify";
+import StaffForm from "../../components/SraffForm";
 
 const Staff = () => {
   const theme = useTheme();
@@ -34,6 +36,19 @@ const Staff = () => {
   // used for Dialog
   const [open, setOpen] = useState(false);
   const [selectedStaffId, setSelectedStaffId] = useState(null);
+
+  // used for Drawer
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleDrawerOpen = (id) => () => {
+    setDrawerOpen(true);
+    setSelectedStaffId(id);
+  };
+
+  const handleDrawerClose = () => () => {
+    setDrawerOpen(false);
+    setSelectedStaffId(null);
+  };
 
   const handleClickOpen = (id) => {
     setOpen(true);
@@ -92,13 +107,6 @@ const Staff = () => {
       cellClassName: "last-name-column",
     },
     { field: "email", headerName: "Email", flex: 1 },
-    // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   headerAlign: "left",
-    //   align: "left",
-    // },
     { field: "phone", headerName: "Phone" },
     {
       field: "activate",
@@ -125,9 +133,9 @@ const Staff = () => {
       field: "role",
       headerName: "Access Level",
       flex: 2,
-      renderCell: ({ value }) => {
+      renderCell: ({ value: { role } }) => {
         let cellColor;
-        switch (value) {
+        switch (role) {
           case "admin":
             cellColor = colors.greenAccent[500];
             break;
@@ -154,11 +162,11 @@ const Staff = () => {
               margin: "10px 0 ",
             }}
           >
-            {value === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {value === "manager" && <ManageAccountsOutlinedIcon />}
-            {value === "staff" && <WorkOutlineOutlinedIcon />}
-            {value === "user" && <PersonOutlineOutlinedIcon />}
-            <Typography color={colors.grey[900]}>{value}</Typography>
+            {role === "admin" && <AdminPanelSettingsOutlinedIcon />}
+            {role === "manager" && <ManageAccountsOutlinedIcon />}
+            {role === "staff" && <WorkOutlineOutlinedIcon />}
+            {role === "user" && <PersonOutlineOutlinedIcon />}
+            <Typography color={colors.grey[900]}>{role}</Typography>
           </Box>
         );
       },
@@ -194,11 +202,13 @@ const Staff = () => {
                   },
                 },
               }}
+              onClick={handleDrawerOpen(id)}
             >
               <Typography color={colors.greenAccent[700]} fontWeight={"bold"}>
                 EDIT
               </Typography>
             </Button>
+
             <Button
               variant="outlined"
               size="small"
@@ -272,9 +282,43 @@ const Staff = () => {
               paginationModel: { pageSize: 10, page: 0 },
             },
           }}
+          sortModel={[
+            // sort "id" by default
+            {
+              field: "id",
+              sort: "asc",
+            },
+          ]}
           pageSizeOptions={[5, 10, 25, 50]}
         />
       </Box>
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={handleDrawerClose()}
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "transparent",
+            },
+          },
+        }}
+        PaperProps={{
+          sx: {
+            backgroundColor: colors.primary[300],
+            width: "30%",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            padding: 2,
+          }}
+        >
+          <Typography variant="h6">Update Staff Info</Typography>
+          <StaffForm mode="update" id={selectedStaffId} fetchStaffs={fetchStaffs}/>
+        </Box>
+      </Drawer>
       <Dialog
         open={open}
         onClose={handleClose}

@@ -1,5 +1,7 @@
 package com.epiceats.epiceats.dto;
 
+import com.epiceats.epiceats.entity.Role;
+
 public record StaffResponse (
         Long id,
         String firstName,
@@ -9,6 +11,6 @@ public record StaffResponse (
         Boolean activate,
         String createTime,
         String updateTime,
-        String role
+        Role role
         ){
 }

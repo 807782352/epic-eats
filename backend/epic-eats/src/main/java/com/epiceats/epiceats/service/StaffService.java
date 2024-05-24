@@ -141,7 +141,7 @@ public class StaffService {
                 staff.getActivate(),
                 staff.getCreateTime().format(formatter),
                 staff.getUpdateTime().format(formatter),
-                staff.getRoleId().getRole()
+                staff.getRoleId()
         );
     }
 }

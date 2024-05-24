@@ -1,11 +1,20 @@
-import { Box, Button, TextField, useTheme } from "@mui/material";
-import { Field, Formik } from "formik";
-import { Form } from "react-router-dom";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { tokens } from "../utils/theme";
-import { addStaff } from "../api/staff";
+import { addStaff, getStaffById, updateStaffById } from "../api/staff";
 import { toast } from "react-toastify";
+import { capitalizeFormater } from "../utils/utils";
+import { useEffect, useState } from "react";
 
 const validationSchema = yup.object({
   firstName: yup
@@ -39,29 +48,69 @@ const validationSchema = yup.object({
     .required("Role is required"),
 });
 
-const CreateStaffForm = () => {
+type Mode = "add" | "update";
+
+interface StaffFormProps {
+  mode?: Mode;
+  id?: number | null;
+  fetchStaffs?: Function | null;
+}
+
+const StaffForm: React.FC<StaffFormProps> = ({
+  mode = "add",
+  id = null,
+  fetchStaffs = null,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: "foo",
-      lastName: "bar",
-      phone: "1234567890",
-      email: "foobar@example.com",
-      password: "password",
-      roleId: 2,
-    },
-    validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const res = await addStaff(values);
+  const [defaultValues, setDefaultValues] = useState({
+    firstName: "foo",
+    lastName: "bar",
+    phone: "1234567890",
+    email: "foobar@example.com",
+    password: "password",
+    roleId: 2,
+  });
 
+  useEffect(() => {
+    if (mode === "update" && id) {
+      const fetchData = async () => {
+        const res = await getStaffById(id);
+        const staff = res.data.data;
+
+        setDefaultValues({
+          firstName: staff.firstName,
+          lastName: staff.lastName,
+          phone: staff.phone,
+          email: staff.email,
+          password: staff.password,
+          roleId: staff.roleId.id,
+        });
+        console.log(staff);
+      };
+      fetchData();
+    }
+  }, [mode, id]);
+
+  const formik = useFormik({
+    initialValues: defaultValues,
+    validationSchema: validationSchema,
+    enableReinitialize: true, // allow form to re-initialize
+    onSubmit: async (values) => {
+      const res =
+        mode === "update"
+          ? await updateStaffById(id, values)
+          : await addStaff(values);
       console.log(res);
 
       if (res.code === 1) {
         toast.success(
-          `Add ${values.firstName.toUpperCase()} ${values.lastName.toUpperCase()} Successfully!`
+          `${capitalizeFormater(mode)} ${values.firstName} ${
+            values.lastName
+          } Successfully!`
         );
+        if (mode === "update") fetchStaffs();
       } else {
         toast.error(res.errMsg);
       }
@@ -74,20 +123,20 @@ const CreateStaffForm = () => {
       sx={{
         "& .MuiTextField-root": {
           "& .MuiInputBase-root": {
-            color: colors.primary[900], // 输入文本颜色
+            color: colors.primary[900],
           },
           "& .MuiFormLabel-root": {
-            color: colors.grey[1000], // 标签颜色
+            color: colors.grey[1000],
           },
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor: colors.primary[900], // 默认边框颜色
+              borderColor: colors.primary[900],
             },
             "&:hover fieldset": {
-              borderColor: colors.primary[600], // 鼠标悬停时边框颜色
+              borderColor: colors.primary[600],
             },
             "&.Mui-focused fieldset": {
-              borderColor: colors.greenAccent[700], // 聚焦时边框颜色
+              borderColor: colors.greenAccent[700],
             },
           },
           "& .MuiFormHelperText-root": {
@@ -105,7 +154,7 @@ const CreateStaffForm = () => {
             id="firstName"
             name="firstName"
             label="FirstName"
-            value={formik.values.firstName}
+            value={capitalizeFormater(formik.values.firstName)}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
@@ -119,7 +168,7 @@ const CreateStaffForm = () => {
             id="lastName"
             name="lastName"
             label="LastName"
-            value={formik.values.lastName}
+            value={capitalizeFormater(formik.values.lastName)}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
@@ -149,6 +198,7 @@ const CreateStaffForm = () => {
             name="password"
             label="Password"
             type="password"
+            disabled={mode === "update"}
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -173,20 +223,47 @@ const CreateStaffForm = () => {
               gridColumn: "span 12",
             }}
           />
-          <TextField
-            fullWidth
-            id="roleId"
-            name="roleId"
-            label="RoleId"
-            value={formik.values.roleId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.roleId && Boolean(formik.errors.roleId)}
-            helperText={formik.touched.roleId && formik.errors.roleId}
+          <FormControl
             sx={{
               gridColumn: "span 12",
             }}
-          />
+          >
+            <InputLabel
+              id="roleId"
+              sx={{
+                color: colors.grey[800],
+              }}
+              shrink={true}
+            >
+              Role Id
+            </InputLabel>
+            <Select
+              labelId="roleId"
+              id="roleId"
+              value={formik.values.roleId}
+              label="Role Id"
+              onChange={(event) => {
+                formik.setFieldValue("roleId", event.target.value);
+              }}
+              sx={{
+                color: colors.primary[900],
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.primary[900], // Default border color
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.primary[600], // Hover border color
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.greenAccent[700], // Focused border color
+                },
+              }}
+            >
+              <MenuItem value={1}>Admin</MenuItem>
+              <MenuItem value={2}>Manager</MenuItem>
+              <MenuItem value={3}>Staff</MenuItem>
+              <MenuItem value={4}>User</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             variant="contained"
             fullWidth
@@ -204,4 +281,4 @@ const CreateStaffForm = () => {
   );
 };
 
-export default CreateStaffForm;
+export default StaffForm;
