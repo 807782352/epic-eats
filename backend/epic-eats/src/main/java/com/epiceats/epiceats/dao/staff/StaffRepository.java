@@ -1,4 +1,4 @@
-package com.epiceats.epiceats.dao;
+package com.epiceats.epiceats.dao.staff;
 
 import com.epiceats.epiceats.entity.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;

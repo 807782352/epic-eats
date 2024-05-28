@@ -1,7 +1,7 @@
 package com.epiceats.epiceats.controller;
 
-import com.epiceats.epiceats.dto.StaffRequest;
-import com.epiceats.epiceats.dto.StaffResponse;
+import com.epiceats.epiceats.dto.staff.StaffRequest;
+import com.epiceats.epiceats.dto.staff.StaffResponse;
 import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.service.StaffService;
 import com.epiceats.epiceats.utils.Result;

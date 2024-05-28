@@ -1,4 +1,4 @@
-package com.epiceats.epiceats.dto;
+package com.epiceats.epiceats.dto.staff;
 
 import com.epiceats.epiceats.entity.Role;
 

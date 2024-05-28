@@ -1,20 +1,17 @@
-package com.epiceats.epiceats.service;
+package com.epiceats.epiceats.dao.staff;
 
-import com.epiceats.epiceats.dao.StaffDao;
-import com.epiceats.epiceats.dao.StaffRepository;
 import com.epiceats.epiceats.entity.Staff;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository("jpa")
-public class StaffJpaDataAccessService implements StaffDao {
+@Repository
+public class StaffDaoImpl implements StaffDao {
 
     private final StaffRepository staffRepository;
 
-    public StaffJpaDataAccessService(StaffRepository staffRepository) {
+    public StaffDaoImpl(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
     }
 

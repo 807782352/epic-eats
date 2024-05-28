@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 public class Staff {
 
     @Id
-    @SequenceGenerator(name = "staff_id_seq", sequenceName = "staff_id_seq")
+    @SequenceGenerator(name = "staff_id_seq", sequenceName = "staff_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "staff_id_seq")
     private Long id;
 

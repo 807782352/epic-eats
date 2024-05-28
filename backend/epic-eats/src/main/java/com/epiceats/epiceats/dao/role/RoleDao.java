@@ -1,4 +1,4 @@
-package com.epiceats.epiceats.dao;
+package com.epiceats.epiceats.dao.role;
 
 import com.epiceats.epiceats.entity.Role;
 

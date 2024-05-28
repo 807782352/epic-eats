@@ -1,9 +1,9 @@
 package com.epiceats.epiceats.service;
 
-import com.epiceats.epiceats.dao.RoleRepository;
-import com.epiceats.epiceats.dao.StaffDao;
-import com.epiceats.epiceats.dto.StaffRequest;
-import com.epiceats.epiceats.dto.StaffResponse;
+import com.epiceats.epiceats.dao.role.RoleRepository;
+import com.epiceats.epiceats.dao.staff.StaffDao;
+import com.epiceats.epiceats.dto.staff.StaffRequest;
+import com.epiceats.epiceats.dto.staff.StaffResponse;
 import com.epiceats.epiceats.entity.Role;
 import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.exception.DuplicateResourceException;
@@ -27,7 +27,7 @@ public class StaffService {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public StaffService(@Qualifier("jpa") StaffDao staffDao, RoleRepository roleRepository) {
+    public StaffService(StaffDao staffDao, RoleRepository roleRepository) {
         this.staffDao = staffDao;
         this.roleRepository = roleRepository;
     }
