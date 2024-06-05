@@ -9,6 +9,7 @@ import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.exception.DuplicateResourceException;
 import com.epiceats.epiceats.exception.RequestValidationException;
 import com.epiceats.epiceats.exception.StaffNotFoundException;
+import com.epiceats.epiceats.utils.DateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,6 @@ public class StaffService {
     private final StaffDao staffDao;
 
     private final RoleRepository roleRepository;
-
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public StaffService(StaffDao staffDao, RoleRepository roleRepository) {
         this.staffDao = staffDao;
@@ -139,8 +138,8 @@ public class StaffService {
                 staff.getPhone(),
                 staff.getEmail(),
                 staff.getActivate(),
-                staff.getCreateTime().format(formatter),
-                staff.getUpdateTime().format(formatter),
+                staff.getCreateTime().format(DateTimeUtils.FORMATTER),
+                staff.getUpdateTime().format(DateTimeUtils.FORMATTER),
                 staff.getRoleId()
         );
     }

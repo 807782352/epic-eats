@@ -24,10 +24,13 @@ import Loading from "../../components/Loading";
 import Error from "../../components/Error";
 import { toast } from "react-toastify";
 import StaffForm from "../../components/SraffForm";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import { useNavigate } from "react-router-dom";
 
 const Staff = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
 
   const [staffData, setStaffData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,21 +43,21 @@ const Staff = () => {
   // used for Drawer
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleDrawerOpen = (id) => () => {
+  const handleDrawerOpen = (id) => {
     setDrawerOpen(true);
     setSelectedStaffId(id);
   };
 
-  const handleDrawerClose = () => () => {
+  const handleDrawerClose = () => {
     setDrawerOpen(false);
     setSelectedStaffId(null);
   };
 
-  const handleClickOpen = (id) => {
+  const handleDialogOpen = (id) => {
     setOpen(true);
     setSelectedStaffId(id);
   };
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOpen(false);
     setSelectedStaffId(null);
   };
@@ -85,11 +88,15 @@ const Staff = () => {
     try {
       await patchStaffActivateById(id);
       toast.success("Status updated successfully!");
-      handleClose();
+      handleDialogClose();
       fetchStaffs();
     } catch (error) {
       toast.error("Failed to update status!");
     }
+  };
+
+  const handleNavigate = (url) => {
+    navigate(url);
   };
 
   const columns: GridColDef<(typeof staffData)[number]>[] = [
@@ -202,7 +209,7 @@ const Staff = () => {
                   },
                 },
               }}
-              onClick={handleDrawerOpen(id)}
+              onClick={() => handleDrawerOpen(id)}
             >
               <Typography color={colors.greenAccent[700]} fontWeight={"bold"}>
                 EDIT
@@ -212,7 +219,7 @@ const Staff = () => {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => handleClickOpen(id)}
+              onClick={() => handleDialogOpen(id)}
               sx={{
                 borderColor: colors.redAccent[700],
                 borderWidth: "2px",
@@ -242,7 +249,34 @@ const Staff = () => {
 
   return (
     <Box m={4}>
-      <Header title="TEAM" subtitle="Managing the Team Members" />
+      <Box display="flex" alignItems="end" justifyContent="space-between">
+        <Header title="TEAM" subtitle="Managing the Team Members" />
+
+        <Button
+          onClick={() => handleNavigate("/form")}
+          sx={{
+            backgroundColor: colors.greenAccent[500],
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 1,
+            "&:hover": {
+              backgroundColor: colors.greenAccent[300],
+            },
+          }}
+        >
+          <AddOutlinedIcon sx={{ color: colors.grey[900] }} />
+          <Typography
+            variant="h6"
+            pr={1}
+            sx={{
+              color: colors.grey[900],
+            }}
+          >
+            Add Staff
+          </Typography>
+        </Button>
+      </Box>
       <Box sx={{ height: "75vh", width: "100%", marginTop: "16px" }}>
         <DataGrid
           rows={staffData}
@@ -271,10 +305,15 @@ const Staff = () => {
             "& .MuiDataGrid-virtualScroller": {
               backgroundColor: colors.primary[300],
             },
-
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: colors.primary[400],
+            },
             "& .MuiDataGrid-footerContainer": {
               borderTop: "none",
               backgroundColor: colors.primary[200],
+            },
+            "& .MuiSvgIcon-root": {
+              color: colors.grey[800],
             },
           }}
           initialState={{
@@ -295,7 +334,7 @@ const Staff = () => {
       <Drawer
         anchor="right"
         open={drawerOpen}
-        onClose={handleDrawerClose()}
+        onClose={() => handleDrawerClose()}
         slotProps={{
           backdrop: {
             sx: {
@@ -316,12 +355,16 @@ const Staff = () => {
           }}
         >
           <Typography variant="h6">Update Staff Info</Typography>
-          <StaffForm mode="update" id={selectedStaffId} fetchStaffs={fetchStaffs}/>
+          <StaffForm
+            mode="update"
+            id={selectedStaffId}
+            fetchStaffs={fetchStaffs}
+          />
         </Box>
       </Drawer>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleDialogClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         slotProps={{
@@ -378,7 +421,7 @@ const Staff = () => {
           }}
         >
           <Button
-            onClick={handleClose}
+            onClick={handleDialogClose}
             sx={{
               color: colors.grey[900],
             }}

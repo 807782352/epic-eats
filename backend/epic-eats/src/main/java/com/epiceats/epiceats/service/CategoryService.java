@@ -2,16 +2,20 @@ package com.epiceats.epiceats.service;
 
 import com.epiceats.epiceats.dao.category.CategoryDao;
 import com.epiceats.epiceats.dto.category.CategoryRequest;
+import com.epiceats.epiceats.dto.category.CategoryResponse;
 import com.epiceats.epiceats.entity.Category;
 import com.epiceats.epiceats.exception.CategoryNotFoundException;
 import com.epiceats.epiceats.exception.DuplicateResourceException;
 import com.epiceats.epiceats.exception.RequestValidationException;
+import com.epiceats.epiceats.utils.DateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -22,8 +26,9 @@ public class CategoryService {
         this.categoryDao = categoryDao;
     }
 
-    public List<Category> getAllCategories() {
-        return categoryDao.selectAllCategories();
+    public List<CategoryResponse> getAllCategories() {
+        return categoryDao.selectAllCategories().stream().map(
+        this::mapToCategoryResponse).collect(Collectors.toList());    // .collect(Collectors.toList()) is a more general way than .toList()
     }
 
     public Category getCategoryById(Long id) {
@@ -117,4 +122,15 @@ public class CategoryService {
 
         System.out.println("Swapped sort values: " + category1.getSort() + " and " + category2.getSort());
     }
+
+    private CategoryResponse mapToCategoryResponse(Category category){
+        return new CategoryResponse(
+                category.getId(),
+                category.getName(),
+                category.getType(),
+                category.getCreateTime().format(DateTimeUtils.FORMATTER),
+                category.getUpdateTime().format(DateTimeUtils.FORMATTER)
+        );
+    }
+
 }

@@ -110,7 +110,7 @@ const StaffForm: React.FC<StaffFormProps> = ({
             values.lastName
           } Successfully!`
         );
-        if (mode === "update") fetchStaffs();
+        if (fetchStaffs) fetchStaffs();
       } else {
         toast.error(res.errMsg);
       }

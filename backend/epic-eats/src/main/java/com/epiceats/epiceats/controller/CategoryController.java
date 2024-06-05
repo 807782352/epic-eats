@@ -1,6 +1,7 @@
 package com.epiceats.epiceats.controller;
 
 import com.epiceats.epiceats.dto.category.CategoryRequest;
+import com.epiceats.epiceats.dto.category.CategoryResponse;
 import com.epiceats.epiceats.entity.Category;
 import com.epiceats.epiceats.service.CategoryService;
 import com.epiceats.epiceats.utils.Result;
@@ -19,8 +20,8 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public Result<List<Category>> getCategories(){
-        List<Category> data = categoryService.getAllCategories();
+    public Result<List<CategoryResponse>> getCategories(){
+        List<CategoryResponse> data = categoryService.getAllCategories();
         return Result.success(data);
     }
 
