@@ -1,8 +1,8 @@
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Sidebar as ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { tokens } from "../../utils/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import profileImg from "../../assets/profile.jpg";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
@@ -15,6 +15,13 @@ import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 const Item = ({ title, icon, to, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === to) {
+      setSelected(title);
+    }
+  }, [location.pathname, to, title, setSelected]);
 
   return (
     <MenuItem
