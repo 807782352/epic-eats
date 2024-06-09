@@ -21,8 +21,12 @@ public class CategoryController {
 
     @GetMapping()
     public Result<List<CategoryResponse>> getCategories(){
-        List<CategoryResponse> data = categoryService.getAllCategories();
-        return Result.success(data);
+        try {
+            List<CategoryResponse> data = categoryService.getAllCategories();
+            return Result.success(data);
+        } catch (Exception e){
+            return Result.error(e.getMessage());
+        }
     }
 
     @GetMapping("/{categoryId}")

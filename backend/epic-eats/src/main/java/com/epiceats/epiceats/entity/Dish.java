@@ -11,18 +11,30 @@ import java.time.ZonedDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Dish {
 
     @Id
-    @SequenceGenerator(name = "category_id_seq", sequenceName = "category_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_id_seq")
+    @SequenceGenerator(name = "dish_id_seq", sequenceName = "dish_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dish_id_seq")
     private Long id;
 
-    @Column(nullable = false)
-    private Integer type;   // 1 for dish; 2 for combo
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @Column(nullable = false)
-    private String name;
+    private Long categoryId;
+
+    private Double price;
+
+    @Column(unique = true, nullable = false)
+    private String code;
+
+    private String image;
+
+    private String description;
+
+    @Column(nullable = false)
+    private Integer status;
 
     @Column(nullable = false, updatable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime createTime;
@@ -30,8 +42,8 @@ public class Category {
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime updateTime;
 
-    @Column(nullable = false)
-    private Long sort;
+//    @Column(nullable = false)
+//    private Long sort;
 
     private Integer isDeleted;
 }

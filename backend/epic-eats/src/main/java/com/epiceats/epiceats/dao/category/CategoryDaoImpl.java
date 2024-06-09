@@ -42,6 +42,7 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
+    // might not use because we use update to do logical deletion
     public void deleteCategoryById(Long id) {
         categoryRepository.deleteById(id);
     }

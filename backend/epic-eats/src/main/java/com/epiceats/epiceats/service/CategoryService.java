@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +75,7 @@ public class CategoryService {
         }
 
         // check if type needs to update
-        if (categoryRequest.type() != null && categoryRequest.type() != curCategory.getType()) {
+        if (categoryRequest.type() != null && !categoryRequest.type().equals(curCategory.getType())) {
             curCategory.setType(categoryRequest.type());
             isChange = true;
         }
@@ -97,7 +96,10 @@ public class CategoryService {
             throw new CategoryNotFoundException("Category with id %s does not exist!".formatted(id));
         }
 
-        categoryDao.deleteCategoryById(id);
+        curCategory.setIsDeleted(1);
+        curCategory.setUpdateTime(ZonedDateTime.now());
+
+        categoryDao.updateCategory(curCategory);
     }
 
     public void swapCategorySort(Long id1, Long id2) {
