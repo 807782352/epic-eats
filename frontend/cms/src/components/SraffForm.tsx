@@ -117,6 +117,10 @@ const StaffForm: React.FC<StaffFormProps> = ({
     },
   });
 
+  useEffect(() => {
+    console.log("Formik Values:", formik.values); // Debug: Check formik values
+  }, [formik.values]);
+
   return (
     <Box
       my={4}
@@ -226,6 +230,12 @@ const StaffForm: React.FC<StaffFormProps> = ({
           <FormControl
             sx={{
               gridColumn: "span 12",
+              "& .MuiInputLabel-root ": {
+                color: colors.grey[1000],
+              },
+              "& .Mui-focused .MuiInputLabel-root": {
+                color: colors.grey[1000],
+              },
             }}
           >
             <InputLabel

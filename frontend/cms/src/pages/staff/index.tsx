@@ -68,11 +68,9 @@ const Staff = () => {
       .then((res) => {
         console.log(res);
         setStaffData(res);
-        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setIsLoading(false);
         setError(err);
       })
       .finally(() => {

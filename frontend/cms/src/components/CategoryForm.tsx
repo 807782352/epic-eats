@@ -145,6 +145,12 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           <FormControl
             sx={{
               gridColumn: "span 12",
+              "& .MuiInputLabel-root ": {
+                color: colors.grey[1000],
+              },
+              "& .Mui-focused .MuiInputLabel-root": {
+                color: colors.grey[1000],
+              },
             }}
           >
             <InputLabel

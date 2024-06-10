@@ -143,6 +143,7 @@ public class DishService {
         return new DishResponse(
                 dish.getId(),
                 dish.getName(),
+                dish.getCategoryId(),
                 categoryName.get().getName(),
                 dish.getCode(),
                 dish.getImage(),
