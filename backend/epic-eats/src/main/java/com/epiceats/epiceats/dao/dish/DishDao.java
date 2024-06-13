@@ -14,6 +14,8 @@ public interface DishDao {
 
     boolean existsDishByName(String name);
 
+    boolean existsDishByCode(String code);
+
     void insertDish(Dish dish);
 
     void updateDish(Dish dish);

@@ -19,6 +19,8 @@ import { capitalizeFormater } from "../utils/utils";
 import { useEffect, useState } from "react";
 import { addDish, getDishById, updateDishById } from "../api/dishes";
 import { getCategories } from "../api/category";
+import ImageUpload from "./ImageUpload";
+import { uploadIamge } from "../api/upload";
 
 const StyledTextarea = styled(TextareaAutosize)(({ theme }) => {
   const colors = tokens(theme.palette.mode);
@@ -30,7 +32,7 @@ const StyledTextarea = styled(TextareaAutosize)(({ theme }) => {
     lineHeight: 1.5,
     padding: "8px 12px",
     borderRadius: "8px",
-    color: colors.primary[900],
+    color: colors.primary[1000],
     background: colors.primary[300],
     border: `1px solid ${colors.primary[300]}`,
     boxShadow: `0px 2px 2px ${colors.primary[300]}`,
@@ -43,6 +45,9 @@ const StyledTextarea = styled(TextareaAutosize)(({ theme }) => {
     },
     "&:focus-visible": {
       outline: 0,
+    },
+    "&::placeholder": {
+      color: colors.primary[1000],
     },
   };
 });
@@ -86,14 +91,22 @@ const DishForm: React.FC<DishFormProps> = ({
 
   const [categories, setCategories] = useState([]);
 
+  // store selected image
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
   const [defaultValues, setDefaultValues] = useState({
-    name: "",
-    categoryId: "",
+    name: "Example",
+    categoryId: "3",
     price: 0,
     image: "",
     description: "",
     code: "",
   });
+
+  // handle upload image  -  want to put into the formit onSubmit
+  const handleImageSelect = (file: File) => {
+    setSelectedImage(file);
+  };
 
   useEffect(() => {
     const fetchCategoriesData = async () => {
@@ -135,6 +148,21 @@ const DishForm: React.FC<DishFormProps> = ({
 
     onSubmit: async (values) => {
       console.log("Form Values:", values); // Debug: Check form values on submit
+
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append("file", selectedImage);
+
+        try {
+          const imgUrl = await uploadIamge(formData);
+          values.image = imgUrl.data; // Set the image URL in the form values
+        } catch (error) {
+          toast.error("Failed to upload image.");
+          return;
+        }
+      }
+      console.log("Form Values:", values); // Debug: Check form values on submit
+
       const res =
         mode === "update"
           ? await updateDishById(id, values)
@@ -275,20 +303,24 @@ const DishForm: React.FC<DishFormProps> = ({
               gridColumn: "span 12",
             }}
           />
-          <TextField
-            fullWidth
-            id="image"
-            name="image"
-            label="Image"
-            value={formik.values.image}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.image && Boolean(formik.errors.image)}
-            helperText={formik.touched.image && formik.errors.image}
-            sx={{
-              gridColumn: "span 12",
-            }}
-          />
+          {formik.values.image && (
+            <TextField
+              fullWidth
+              id="image"
+              name="image"
+              label="Image Url"
+              value={formik.values.image}
+              onBlur={formik.handleBlur}
+              error={formik.touched.image && Boolean(formik.errors.image)}
+              helperText={formik.touched.image && formik.errors.image}
+              sx={{
+                gridColumn: "span 12",
+              }}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          )}
           <Typography
             variant="h6"
             sx={{
@@ -311,6 +343,14 @@ const DishForm: React.FC<DishFormProps> = ({
               gridColumn: "span 12",
             }}
           />
+
+          <Box
+            sx={{
+              gridColumn: "span 12",
+            }}
+          >
+            <ImageUpload onSelectImage={handleImageSelect} />
+          </Box>
 
           <Button
             variant="contained"

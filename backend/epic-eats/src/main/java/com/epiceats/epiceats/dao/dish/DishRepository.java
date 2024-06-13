@@ -10,5 +10,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
 
     boolean existsDishByName(String name);
 
+    boolean existsDishByCode(String code);
+
     List<Dish> findAllByCategoryId(Long categoryId);
 }

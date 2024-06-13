@@ -36,6 +36,11 @@ public class DishDaoImpl implements DishDao{
     }
 
     @Override
+    public boolean existsDishByCode(String code) {
+        return dishRepository.existsDishByCode(code);
+    }
+
+    @Override
     public void insertDish(Dish dish) {
         dishRepository.save(dish);
     }

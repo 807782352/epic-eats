@@ -50,6 +50,10 @@ public class DishService {
             throw new DuplicateResourceException("Dish with name [%s] is existed".formatted(dishRequest.name()));
         }
 
+        if (dishDao.existsDishByCode(dishRequest.code())) {
+            throw new DuplicateResourceException("Dish with code [%s] is existed".formatted(dishRequest.code()));
+        }
+
         Dish newDish = new Dish();
         BeanUtils.copyProperties(dishRequest, newDish);
         newDish.setCreateTime(ZonedDateTime.now());
@@ -105,6 +109,9 @@ public class DishService {
         }
 
         if (dishRequest.code() != null && !dishRequest.code().equals(curDish.getCode())){
+            if (dishDao.existsDishByCode(dishRequest.code())) {
+                throw new DuplicateResourceException("Dish with code [%s] has already been used".formatted(dishRequest.code()));
+            }
             curDish.setCode(dishRequest.code());
             isChange = true;
         }

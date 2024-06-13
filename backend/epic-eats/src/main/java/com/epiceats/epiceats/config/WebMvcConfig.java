@@ -23,5 +23,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedMethods(allowedMethods.toArray(new String[0]))
                 .allowedHeaders("*")
                 .allowCredentials(true);
+
+        // Add CORS configuration for /upload path
+        registry.addMapping("/upload")
+                .allowedOrigins(allowedOrigins.toArray(new String[0]))
+                .allowedMethods(allowedMethods.toArray(new String[0]))
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
+
+
 }

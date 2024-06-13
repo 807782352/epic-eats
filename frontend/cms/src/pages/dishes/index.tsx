@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   Drawer,
+  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -23,6 +24,8 @@ import {
 import DishForm from "../../components/DishForm";
 import { currencyFormatter } from "../../utils/utils";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
+import Error from "../../components/Error";
 
 const Dishes = () => {
   const theme = useTheme();
@@ -57,15 +60,21 @@ const Dishes = () => {
   const [selectedDishId, setSelectedDishId] = useState(null);
 
   // used for Drawer
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [updateDrawerOpen, setUpdateDrawerOpen] = useState(false);
+  const [addDrawerOpen, setAddDrawerOpen] = useState(false);
 
-  const handleDrawerOpen = (id) => {
-    setDrawerOpen(true);
+  const handleAddDrawerOpen = () => {
+    setAddDrawerOpen(true);
+  };
+
+  const handleUpdateDrawerOpen = (id) => {
+    setUpdateDrawerOpen(true);
     setSelectedDishId(id);
   };
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
+    setAddDrawerOpen(false);
+    setUpdateDrawerOpen(false);
     setSelectedDishId(null);
   };
 
@@ -109,7 +118,32 @@ const Dishes = () => {
 
   const columns: GridColDef<(typeof dishData)[number]>[] = [
     { field: "id", headerName: "ID" },
-    { field: "image", headerName: "Image" },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 120,
+      renderCell: ({ value }) => (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <img
+            src={value}
+            style={{
+              width: "100%",
+              maxWidth: "120px",
+              maxHeight: "80%",
+              objectFit: "cover",
+            }}
+          />
+        </Box>
+      ),
+    },
     {
       field: "name",
       headerName: "Name",
@@ -167,7 +201,7 @@ const Dishes = () => {
             <Button
               variant="outlined"
               size="small"
-              disabled={isDeleted} // disable when it is deleted
+              disabled={isDeleted === 1} // disable when it is deleted
               sx={{
                 borderColor: colors.greenAccent[700],
                 borderWidth: "2px",
@@ -181,7 +215,7 @@ const Dishes = () => {
                   },
                 },
               }}
-              onClick={() => handleDrawerOpen(id)}
+              onClick={() => handleUpdateDrawerOpen(id)}
             >
               <Typography color={colors.greenAccent[700]} fontWeight={"bold"}>
                 EDIT
@@ -191,7 +225,7 @@ const Dishes = () => {
             <Button
               variant="outlined"
               size="small"
-              disabled={isDeleted} // disable when it is deleted
+              disabled={isDeleted === 1} // disable when it is deleted
               onClick={() => handleStatusDialogOpen(id)}
               sx={{
                 borderColor: colors.redAccent[700],
@@ -240,8 +274,8 @@ const Dishes = () => {
     },
   ];
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading) return <Loading sxProps={{ m: 4 }} />;
+  if (error) return <Error errorMsg={error.message} sxProps={{ m: 4 }} />;
 
   console.log("dishData", dishData);
 
@@ -251,6 +285,7 @@ const Dishes = () => {
         <Header title="Dishes" subtitle="Manage the Menu Dishes" />
 
         <Button
+          onClick={handleAddDrawerOpen}
           sx={{
             backgroundColor: colors.greenAccent[500],
             display: "flex",
@@ -342,7 +377,7 @@ const Dishes = () => {
       </Box>
       <Drawer
         anchor="right"
-        open={drawerOpen}
+        open={updateDrawerOpen}
         onClose={() => handleDrawerClose()}
         slotProps={{
           backdrop: {
@@ -369,6 +404,33 @@ const Dishes = () => {
             id={selectedDishId}
             fetchDishes={fetchDishes}
           />
+        </Box>
+      </Drawer>
+      <Drawer
+        anchor="right"
+        open={addDrawerOpen}
+        onClose={() => handleDrawerClose()}
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "transparent",
+            },
+          },
+        }}
+        PaperProps={{
+          sx: {
+            backgroundColor: colors.primary[300],
+            width: "30%",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            padding: 2,
+          }}
+        >
+          <Typography variant="h6">Add Dish Info</Typography>
+          <DishForm mode="add" fetchDishes={fetchDishes} />
         </Box>
       </Drawer>
       <Dialog
