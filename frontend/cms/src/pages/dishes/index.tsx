@@ -15,8 +15,14 @@ import Header from "../../components/Header";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { getDishes } from "../../api/dishes";
+import {
+  changeDishDeleteById,
+  changeDishStatusById,
+  getDishes,
+} from "../../api/dishes";
 import DishForm from "../../components/DishForm";
+import { currencyFormatter } from "../../utils/utils";
+import { toast } from "react-toastify";
 
 const Dishes = () => {
   const theme = useTheme();
@@ -46,7 +52,8 @@ const Dishes = () => {
   }, []);
 
   // used for Dialog
-  const [open, setOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const [isDishDeleteOpen, setIsDishDeleteOpen] = useState(false);
   const [selectedDishId, setSelectedDishId] = useState(null);
 
   // used for Drawer
@@ -62,13 +69,42 @@ const Dishes = () => {
     setSelectedDishId(null);
   };
 
-  const handleDialogOpen = (id) => {
-    setOpen(true);
+  const handleStatusDialogOpen = (id) => {
+    setStatusOpen(true);
     setSelectedDishId(id);
   };
+
+  const handleDishDeleteDialogOpen = (id) => {
+    setIsDishDeleteOpen(true);
+    setSelectedDishId(id);
+  };
+
   const handleDialogClose = () => {
-    setOpen(false);
     setSelectedDishId(null);
+    setStatusOpen(false);
+    setIsDishDeleteOpen(false);
+    fetchDishes();
+  };
+
+  const handleIsDishDeleted = async (id) => {
+    try {
+      await changeDishDeleteById(id);
+      toast.success("Dish status deleted/activated Successfully!");
+      handleDialogClose();
+    } catch (error) {
+      toast.error("Failed to delete/activate dish!");
+    }
+  };
+
+  const handleChangeStatus = async (id) => {
+    try {
+      await changeDishStatusById(id);
+      toast.success("Dish status changed Successfully!");
+      handleDialogClose();
+      fetchDishes();
+    } catch (error) {
+      toast.error("Failed to change dish status!");
+    }
   };
 
   const columns: GridColDef<(typeof dishData)[number]>[] = [
@@ -86,7 +122,11 @@ const Dishes = () => {
       flex: 1,
     },
     { field: "code", headerName: "Code", flex: 1 },
-    { field: "price", headerName: "Price" },
+    {
+      field: "price",
+      headerName: "Price",
+      valueFormatter: (value) => currencyFormatter.format(value),
+    },
     { field: "description", headerName: "Description" },
     {
       field: "status",
@@ -116,7 +156,7 @@ const Dishes = () => {
       headerName: "Operations",
       flex: 2,
       sortable: false,
-      renderCell: ({ row: { activate, id } }) => {
+      renderCell: ({ row: { id, status, isDeleted } }) => {
         return (
           <Box
             display="flex"
@@ -127,6 +167,7 @@ const Dishes = () => {
             <Button
               variant="outlined"
               size="small"
+              disabled={isDeleted} // disable when it is deleted
               sx={{
                 borderColor: colors.greenAccent[700],
                 borderWidth: "2px",
@@ -150,7 +191,8 @@ const Dishes = () => {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => handleDialogOpen(id)}
+              disabled={isDeleted} // disable when it is deleted
+              onClick={() => handleStatusDialogOpen(id)}
               sx={{
                 borderColor: colors.redAccent[700],
                 borderWidth: "2px",
@@ -166,7 +208,30 @@ const Dishes = () => {
               }}
             >
               <Typography color={colors.redAccent[900]} fontWeight={"bold"}>
-                {activate ? "SUSPEND" : "ACTIVATE"}
+                {status ? "DELIST" : "LIST"}
+              </Typography>
+            </Button>
+
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleDishDeleteDialogOpen(id)}
+              sx={{
+                borderColor: colors.grey[700],
+                borderWidth: "2px",
+                "&:hover": {
+                  backgroundColor: colors.grey[500],
+                  borderColor: colors.grey[500],
+                  boxShadow: "none",
+                  ".MuiTypography-root": {
+                    // Hover will also change the color of the typography below
+                    color: colors.grey[900],
+                  },
+                },
+              }}
+            >
+              <Typography color={colors.grey[900]} fontWeight={"bold"}>
+                {isDeleted ? "ACTIVATE" : "DELETE"}
               </Typography>
             </Button>
           </Box>
@@ -183,7 +248,7 @@ const Dishes = () => {
   return (
     <Box m={4}>
       <Box display="flex" alignItems="end" justifyContent="space-between">
-        <Header title="Dishes" subtitle="Managing the Menu Dishes" />
+        <Header title="Dishes" subtitle="Manage the Menu Dishes" />
 
         <Button
           sx={{
@@ -213,6 +278,9 @@ const Dishes = () => {
         <DataGrid
           rows={dishData}
           columns={columns}
+          getRowClassName={(params) =>
+            params.row.isDeleted ? "deleted-row" : ""
+          }
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -246,6 +314,15 @@ const Dishes = () => {
             },
             "& .MuiSvgIcon-root": {
               color: colors.grey[800],
+            },
+            // set deleted row as greyscale background
+            "& .deleted-row": {
+              backgroundColor: colors.grey[400],
+            },
+
+            "& .deleted-row:hover": {
+              backgroundColor: colors.grey[400],
+              cursor: "not-allowed",
             },
           }}
           initialState={{
@@ -295,7 +372,7 @@ const Dishes = () => {
         </Box>
       </Drawer>
       <Dialog
-        open={open}
+        open={statusOpen}
         onClose={handleDialogClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -314,7 +391,7 @@ const Dishes = () => {
             backgroundColor: colors.primary[400],
           }}
         >
-          <Typography variant="h3">{"Activate / Suspend Staff"}</Typography>
+          <Typography variant="h3">{"List / Delist Dish"}</Typography>
         </DialogTitle>
         <DialogContent
           sx={{
@@ -328,18 +405,15 @@ const Dishes = () => {
               paddingTop: 2,
             }}
           >
-            {/* <Typography variant="h5">
-              Are you sure you want to{" "}
+            <Typography variant="h5">
+              Are you sure to{" "}
               {selectedDishId &&
-              dishData.find((dish) => dish.id === selectedDishId)?.activate
-                ? "SUSPEND"
-                : "ACTIVATE"}{" "}
-              [
-              {
-                dishData.find((dish) => dish.id === selectedDishId)
-                  ?.name
-              }
-            </Typography> */}
+              dishData.find((dish) => dish.id === selectedDishId)?.status
+                ? "delist"
+                : "list"}
+              {" dish "}[
+              {dishData.find((dish) => dish.id === selectedDishId)?.name}]
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions
@@ -357,6 +431,76 @@ const Dishes = () => {
           </Button>
           <Button
             autoFocus
+            onClick={() => handleChangeStatus(selectedDishId)}
+            sx={{
+              color: colors.grey[900],
+            }}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={isDishDeleteOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(1px)",
+            },
+          },
+        }}
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <Typography variant="h3">{"Activate / Delete Dish"}</Typography>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{
+              color: colors.grey[800],
+              paddingTop: 2,
+            }}
+          >
+            <Typography variant="h5">
+              Are you sure to{" "}
+              {selectedDishId &&
+              dishData.find((dish) => dish.id === selectedDishId)?.isDeleted
+                ? "activate"
+                : "delete"}
+              {" dish "}[
+              {dishData.find((dish) => dish.id === selectedDishId)?.name}]
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            backgroundColor: colors.primary[400],
+          }}
+        >
+          <Button
+            onClick={handleDialogClose}
+            sx={{
+              color: colors.grey[900],
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            autoFocus
+            onClick={() => handleIsDishDeleted(selectedDishId)}
             sx={{
               color: colors.grey[900],
             }}

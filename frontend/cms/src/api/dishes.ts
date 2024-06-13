@@ -37,7 +37,15 @@ export const addDish = async (data) => {
   return response.data;
 };
 
-export const deleteDishById = async (id) => {
+export const changeDishStatusById = async (id) => {
+  console.log("Request: " + `${rootUrl}/api/v1/dish/${id}`);
+  const response = await axios.patch(`${rootUrl}/api/v1/dish/${id}`);
+  console.log("Response: " + response.data);
+  return response.data;
+};
+
+
+export const changeDishDeleteById = async (id) => {
   console.log("Request: " + `${rootUrl}/api/v1/dish/${id}`);
   const response = await axios.delete(`${rootUrl}/api/v1/dish/${id}`);
   console.log("Response: " + response.data);

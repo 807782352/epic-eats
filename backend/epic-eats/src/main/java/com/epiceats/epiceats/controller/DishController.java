@@ -69,11 +69,21 @@ public class DishController {
         }
     }
 
+    @PatchMapping("/{dishId}")
+    public Result<String> changeStatus(@PathVariable("dishId") Long dishId){
+        try {
+            dishService.changeStatus(dishId);
+            return Result.success("Swap Dish Status Successfully!");
+        } catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{dishId}")
     public Result<String> deleteDish(@PathVariable("dishId") Long dishId){
         try {
-            dishService.deleteDish(dishId);
-            return Result.success("Delete Dish Successfully!");
+            dishService.changeIsDelete(dishId);
+            return Result.success("Change Dish isDelete Status Successfully!");
         } catch (Exception e){
             return Result.error(e.getMessage());
         }

@@ -119,14 +119,29 @@ public class DishService {
 
     }
 
-    public void deleteDish(Long id){
+    public void changeIsDelete(Long id){
         Dish curDish = getDishById(id);
 
         if (curDish == null) {
             throw new DishNotFoundException("Dish with id [%s] is not found!".formatted(id));
         }
 
-        curDish.setIsDeleted(1);
+        curDish.setIsDeleted(curDish.getIsDeleted() == 1 ? 0 : 1);
+        curDish.setStatus(0);
+        curDish.setUpdateTime(ZonedDateTime.now());
+
+        dishDao.updateDish(curDish);
+
+    }
+
+    public void changeStatus(Long id){
+        Dish curDish = getDishById(id);
+
+        if (curDish == null) {
+            throw new DishNotFoundException("Dish with id [%s] is not found!".formatted(id));
+        }
+
+        curDish.setStatus(curDish.getStatus() == 1 ? 0 : 1);
         curDish.setUpdateTime(ZonedDateTime.now());
 
         dishDao.updateDish(curDish);
