@@ -93,6 +93,8 @@ const DishForm: React.FC<DishFormProps> = ({
 
   // store selected image
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  // store its url
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const [defaultValues, setDefaultValues] = useState({
     name: "Example",
@@ -106,6 +108,7 @@ const DishForm: React.FC<DishFormProps> = ({
   // handle upload image  -  want to put into the formit onSubmit
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
+    setImagePreviewUrl(URL.createObjectURL(file)); // Create a local URL for the selected image
   };
 
   useEffect(() => {
@@ -131,6 +134,7 @@ const DishForm: React.FC<DishFormProps> = ({
             description: dish.description,
             code: dish.code,
           });
+          setImagePreviewUrl(dish.image);
         } catch (error) {
           toast.error("Failed to load dish data");
         }
@@ -148,6 +152,8 @@ const DishForm: React.FC<DishFormProps> = ({
 
     onSubmit: async (values) => {
       console.log("Form Values:", values); // Debug: Check form values on submit
+
+      console.log(selectedImage);
 
       if (selectedImage) {
         const formData = new FormData();
@@ -347,9 +353,34 @@ const DishForm: React.FC<DishFormProps> = ({
           <Box
             sx={{
               gridColumn: "span 12",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
             <ImageUpload onSelectImage={handleImageSelect} />
+            {imagePreviewUrl && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <img
+                  src={imagePreviewUrl}
+                  style={{
+                    width: "100%",
+                    maxWidth: "200px",
+                    maxHeight: "80%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
+            )}
           </Box>
 
           <Button
