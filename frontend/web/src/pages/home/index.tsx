@@ -1,17 +1,20 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
-import RipPaper from "../../components/RipPaper";
 import { tokens } from "../../utils/theme";
 import RipPaperWrapper from "../../components/RipPaperWrapper";
+import {  ParallaxProvider } from "react-scroll-parallax";
+import Section1 from "./section1";
 
 const Section = styled(Box)(({ theme }) => {
   const colors = tokens(theme.palette.mode);
   return {
-    minHeight: "80vh",
+    minHeight: "90vh",
     fontSize: "2rem",
     fontWeight: "bold",
     textAlign: "center",
     position: "relative",
+    backgroundColor: theme.palette.background.default,
 
     "&:nth-of-type(odd)": {
       backgroundColor: colors.primary[300],
@@ -35,25 +38,28 @@ function Home() {
   const colors = tokens(theme.palette.mode);
 
   return (
-    <div>
-      <Section>
-        <Box>Section 1</Box>
-        <RipPaperWrapper fillColor={colors.grey[700]} />
-      </Section>
+    <Box mt={10}>
+      <ParallaxProvider>
+        <Section>
+          <Section1 />
 
-      <Section>
-        Section 2
-        <RipPaperWrapper fillColor={colors.primary[300]} />
-      </Section>
-      <Section>
-        Section 3
-        <RipPaperWrapper fillColor={colors.grey[700]} />
-      </Section>
-      <Section>
-        Section 4
-        <RipPaperWrapper fillColor={colors.primary[300]} />
-      </Section>
-    </div>
+          <RipPaperWrapper fillColor={colors.grey[700]} />
+        </Section>
+
+        <Section>
+          Section 2
+          <RipPaperWrapper fillColor={colors.primary[300]} />
+        </Section>
+        <Section>
+          Section 3
+          <RipPaperWrapper fillColor={colors.grey[700]} />
+        </Section>
+        <Section>
+          Section 4
+          <RipPaperWrapper fillColor={colors.primary[300]} />
+        </Section>
+      </ParallaxProvider>
+    </Box>
   );
 }
 
