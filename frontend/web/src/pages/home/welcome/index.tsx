@@ -19,7 +19,17 @@ const Welcome = () => {
 
   return (
     <Container maxWidth="xl">
-      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+      <Box
+        sx={{
+          display: {
+            xs: "flex",
+            md: "grid",
+          },
+          gridTemplateColumns: "repeat(12, 1fr)",
+          gap: 2,
+          flexDirection: "column",
+        }}
+      >
         {/* Left Side  */}
         <Box
           gridColumn="2/6"
@@ -47,7 +57,7 @@ const Welcome = () => {
               }}
             />
           </Parallax>
-          <Parallax speed={-120}>
+          <Parallax speed={-100}>
             <Box
               component="img"
               src={chopsticks2}
@@ -61,7 +71,7 @@ const Welcome = () => {
               }}
             />
           </Parallax>
-          <Parallax speed={-120}>
+          <Parallax speed={-100}>
             <Typography
               variant="h1"
               noWrap
@@ -80,7 +90,7 @@ const Welcome = () => {
               Lai Xiang Hui
             </Typography>
           </Parallax>
-          <Parallax speed={-120}>
+          <Parallax speed={-100}>
             <Box
               component="img"
               src={chopsticks1}
@@ -123,6 +133,14 @@ const Welcome = () => {
             justifyContent: "center",
             position: "relative",
             gap: 3,
+            marginY: {
+              xs: 10,
+              md: 0,
+            },
+            paddingX: {
+              xs: 10,
+              md: 0,
+            },
           }}
         >
           <Typography
@@ -150,8 +168,8 @@ const Welcome = () => {
               },
             }}
           >
-            Discover the rich flavors and vibrant traditions of Chinese Hunan cuisine,
-            with a special focus on noodle dishes.
+            Discover the rich flavors and vibrant traditions of Chinese Hunan
+            cuisine, with a special focus on noodle dishes.
           </Typography>
           <Typography
             variant="h2"
@@ -163,6 +181,10 @@ const Welcome = () => {
                 md: "1.5rem",
                 lg: "1.75rem",
               },
+              display: {
+                xs: "none",
+                md: "block",
+              },
             }}
           >
             Whether you're a lifelong fan or new to Chinese food, our site
@@ -173,6 +195,10 @@ const Welcome = () => {
             variant="h4"
             sx={{
               color: colors.grey[800],
+              display: {
+                xs: "none",
+                md: "block",
+              },
               fontSize: {
                 xs: "1rem",
                 sm: "1.25rem",
@@ -182,7 +208,7 @@ const Welcome = () => {
             }}
           >
             Join us on this delicious journey, explore authentic tastes, and
-            let's make every meal an epic feast! 
+            let's make every meal an epic feast!
           </Typography>
 
           <Box display="flex" gap={3}>
