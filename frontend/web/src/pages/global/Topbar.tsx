@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -17,14 +18,22 @@ const pages = ["Home", "Menu", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Topbar() {
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -33,14 +42,26 @@ function Topbar() {
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2, display: { xs: "flex", md: "none" } }}
+            onClick={handleOpenNavMenu}
+          >
+            <MenuIcon />
+          </IconButton>
+
           <Typography
             variant="h4"
             noWrap
             component="a"
             href=""
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
+              flexGrow: 1,
+              display: { xs: "flex", md: "block" },
+              justifyContent: "center",
               fontFamily: "Caveat",
               fontWeight: 700,
               letterSpacing: ".2rem",
@@ -51,27 +72,26 @@ function Topbar() {
             Lai Xiang Hui
           </Typography>
 
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={handleCloseNavMenu}
+                sx={{
+                  my: 2,
+                  color: "inherit",
+                  display: "block",
+                  fontFamily: "Caveat",
+                  fontSize: "1rem",
+                  fontWeight: "700",
+                }}
               >
-                <Typography variant="h5" fontFamily={"Caveat"}>
-                  {page}
-                </Typography>
+                {page}
               </Button>
             ))}
           </Box>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 0, display: "flex" }}>
             <IconButton size="large" color="inherit">
               <Badge badgeContent={4} color="error">
                 <ShoppingCartIcon />
@@ -93,8 +113,32 @@ function Topbar() {
           </Box>
 
           <Menu
-            sx={{ mt: "45px" }}
             id="menu-appbar"
+            anchorEl={anchorElNav}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
+            sx={{
+              display: { xs: "block", md: "none" },
+            }}
+          >
+            {pages.map((page) => (
+              <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{page}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar-user"
             anchorEl={anchorElUser}
             anchorOrigin={{
               vertical: "top",
