@@ -13,7 +13,7 @@ import chopsticks1 from "/images/chopsticks1.png";
 import chopsticks2 from "/images/chopsticks2.png";
 import { tokens } from "../../../utils/theme";
 
-const Section1 = () => {
+const Welcome = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -25,7 +25,7 @@ const Section1 = () => {
           gridColumn="2/6"
           sx={{
             width: "100%",
-            height: "100%",
+            height: "90vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -43,11 +43,11 @@ const Section1 = () => {
                 position: "absolute",
                 bottom: -10,
                 left: "50%",
-                transform: "translate(-55%, 140%)",
+                transform: "translate(-55%, 120%)",
               }}
             />
           </Parallax>
-          <Parallax speed={-100}>
+          <Parallax speed={-120}>
             <Box
               component="img"
               src={chopsticks2}
@@ -55,13 +55,13 @@ const Section1 = () => {
                 width: "360px",
                 height: "auto",
                 position: "absolute",
-                top: -260,
+                top: -280,
                 left: "50%",
                 transform: "translateX(-10%)",
               }}
             />
           </Parallax>
-          <Parallax speed={-100}>
+          <Parallax speed={-120}>
             <Typography
               variant="h1"
               noWrap
@@ -69,7 +69,7 @@ const Section1 = () => {
               fontSize={60}
               sx={{
                 position: "absolute",
-                top: -200,
+                top: -220,
                 left: "50%",
                 transform: "translateX(-60%)",
                 color: "white",
@@ -77,10 +77,10 @@ const Section1 = () => {
                 padding: 1,
               }}
             >
-              Epic Eats
+              Lai Xiang Hui
             </Typography>
           </Parallax>
-          <Parallax speed={-100}>
+          <Parallax speed={-120}>
             <Box
               component="img"
               src={chopsticks1}
@@ -88,7 +88,7 @@ const Section1 = () => {
                 width: "360px",
                 height: "auto",
                 position: "absolute",
-                top: -260,
+                top: -280,
                 left: "50%",
                 transform: "translateX(-10%)",
               }}
@@ -105,7 +105,7 @@ const Section1 = () => {
                 position: "absolute",
                 bottom: -10,
                 left: "50%",
-                transform: "translate(-55%, 140%)",
+                transform: "translate(-55%, 120%)",
               }}
             />
           </Parallax>
@@ -114,7 +114,6 @@ const Section1 = () => {
         {/* Right Side  */}
         <Box
           gridColumn="8/12"
-          paddingTop={10}
           sx={{
             width: "100%",
             height: "100%",
@@ -137,7 +136,7 @@ const Section1 = () => {
               },
             }}
           >
-            Welcome to Epic Eats!
+            Welcome to Lai Xiang Hui!
           </Typography>
           <Typography
             variant="h3"
@@ -151,7 +150,7 @@ const Section1 = () => {
               },
             }}
           >
-            Discover the rich flavors and vibrant traditions of Chinese cuisine,
+            Discover the rich flavors and vibrant traditions of Chinese Hunan cuisine,
             with a special focus on noodle dishes.
           </Typography>
           <Typography
@@ -183,7 +182,7 @@ const Section1 = () => {
             }}
           >
             Join us on this delicious journey, explore authentic tastes, and
-            let's make every meal an epic feast! Bon appétit!
+            let's make every meal an epic feast! 
           </Typography>
 
           <Box display="flex" gap={3}>
@@ -210,4 +209,4 @@ const Section1 = () => {
   );
 };
 
-export default Section1;
+export default Welcome;

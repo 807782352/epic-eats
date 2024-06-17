@@ -48,7 +48,7 @@ function Topbar() {
               textDecoration: "none",
             }}
           >
-            Epic Eats
+            Lai Xiang Hui
           </Typography>
 
           <Box
