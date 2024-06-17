@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 import { tokens } from "../../utils/theme";
 import RipPaperWrapper from "../../components/RipPaperWrapper";
-import {  ParallaxProvider } from "react-scroll-parallax";
+import { ParallaxProvider } from "react-scroll-parallax";
 import Section1 from "./section1";
+import { Container } from "@mui/material";
 
 const Section = styled(Box)(({ theme }) => {
   const colors = tokens(theme.palette.mode);
@@ -42,7 +43,6 @@ function Home() {
       <ParallaxProvider>
         <Section>
           <Section1 />
-
           <RipPaperWrapper fillColor={colors.grey[700]} />
         </Section>
 
