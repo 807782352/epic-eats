@@ -1,11 +1,17 @@
 import "./App.css";
 import { ColorModeContext, tokens, useMode } from "./utils/theme";
 import { Route, Routes } from "react-router-dom";
+import Sidebar from "./pages/global/Sidebar";
+import Topbar from "./pages/global/Topbar";
+import Dashboard from "./pages/dashboard";
+import Staff from "./pages/staff";
+import Dishes from "./pages/dishes";
+import Category from "./pages/category";
+import Order from "./pages/order";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
+import Form from "./pages/form";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import Topbar from "./pages/global/Topbar";
-import Home from "./pages/home";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -33,15 +39,16 @@ function App() {
         />
 
         <div className="app">
+          <Sidebar />
           <main className="content">
             <Topbar />
             <Routes>
-              <Route path="/" element={<Home />}></Route>
-              {/* <Route path="/staff" element={<Staff />}></Route>
+              <Route path="/" element={<Dashboard />}></Route>
+              <Route path="/staff" element={<Staff />}></Route>
               <Route path="/form" element={<Form />}></Route>
               <Route path="/dishes" element={<Dishes />}></Route>
               <Route path="/category" element={<Category />}></Route>
-              <Route path="/order" element={<Order />}></Route> */}
+              <Route path="/order" element={<Order />}></Route>
             </Routes>
           </main>
         </div>

@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "epic-eats",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,14 +12,17 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.20",
-    "axios": "^1.7.2",
+    "@mui/icons-material": "^5.15.18",
+    "@mui/material": "^5.15.18",
+    "@mui/x-data-grid": "^7.5.0",
+    "axios": "^1.6.8",
+    "formik": "^2.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^6.23.1",
-    "react-scroll-parallax": "^3.4.5",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
