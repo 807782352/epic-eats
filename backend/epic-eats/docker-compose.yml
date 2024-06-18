@@ -1,0 +1,32 @@
+services:
+  db:
+    container_name: epiceats-postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: epiceats
+      POSTGRES_PASSWORD: password123
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+  epiceats-api:
+    container_name: epiceats-api
+    image: ziyixu63/epic-eats-api
+    ports:
+      - "8088:8080"
+    networks:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/epiceats
+volumes:
+  db:
+
+networks:
+  db:
+    driver: bridge
+
+
