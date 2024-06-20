@@ -42,6 +42,9 @@ public class Dish {
     @Column(nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private ZonedDateTime updateTime;
 
+    @Column(nullable = false)
+    private Long purchaseAmount;
+
 //    @Column(nullable = false)
 //    private Long sort;
 

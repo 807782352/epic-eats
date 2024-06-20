@@ -12,6 +12,7 @@ public record DishResponse (
         Integer status,
         Integer isDeleted,
         String createTime,
-        String updateTime
+        String updateTime,
+        Long purchaseAmount
 ){
 }

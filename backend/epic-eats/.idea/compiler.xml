@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="epic-eats" target="16" />
-      <module name="epic-eats-api" target="16" />
+      <module name="epic-eats-api" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

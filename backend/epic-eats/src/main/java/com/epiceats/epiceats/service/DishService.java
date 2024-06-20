@@ -61,8 +61,35 @@ public class DishService {
 
         newDish.setStatus(1);
         newDish.setIsDeleted(0);
+        newDish.setPurchaseAmount(0L);
 
         dishDao.insertDish(newDish);
+    }
+
+    public void addDishPurchaseAmount(Long id){
+        Dish curDish = getDishById(id);
+
+        if (curDish == null) {
+            throw new DishNotFoundException("Dish with [%s] is not found!".formatted(id));
+        }
+
+        curDish.setUpdateTime(ZonedDateTime.now());
+
+        curDish.setPurchaseAmount(curDish.getPurchaseAmount() + 1);
+        dishDao.updateDish(curDish);
+    }
+
+    public void minusDishPurchaseAmount(Long id){
+        Dish curDish = getDishById(id);
+
+        if (curDish == null) {
+            throw new DishNotFoundException("Dish with [%s] is not found!".formatted(id));
+        }
+
+        curDish.setUpdateTime(ZonedDateTime.now());
+
+        curDish.setPurchaseAmount(curDish.getPurchaseAmount() <= 1 ? 0 : curDish.getPurchaseAmount() - 1);
+        dishDao.updateDish(curDish);
     }
 
     public void updateDish(Long id, DishRequest dishRequest){
@@ -174,7 +201,8 @@ public class DishService {
                 dish.getStatus(),
                 dish.getIsDeleted(),
                 dish.getCreateTime().format(DateTimeUtils.FORMATTER),
-                dish.getUpdateTime().format(DateTimeUtils.FORMATTER)
+                dish.getUpdateTime().format(DateTimeUtils.FORMATTER),
+                dish.getPurchaseAmount()
 
         );
     }

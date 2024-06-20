@@ -79,6 +79,16 @@ public class DishController {
         }
     }
 
+    @PatchMapping("/purchase/{dishId}")
+    public Result<String> addDishPurchaseAmount(@PathVariable("dishId") Long dishId){
+        try {
+            dishService.addDishPurchaseAmount(dishId);
+            return Result.success("Add Dish Purchase Amount Successfully!");
+        } catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{dishId}")
     public Result<String> deleteDish(@PathVariable("dishId") Long dishId){
         try {
