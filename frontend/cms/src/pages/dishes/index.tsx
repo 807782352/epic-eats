@@ -162,7 +162,10 @@ const Dishes = () => {
       valueFormatter: (value) => currencyFormatter.format(value),
     },
     { field: "description", headerName: "Description" },
+<<<<<<< HEAD
     { field: "purchaseAmount", headerName: "Sales", type: "number" },
+=======
+>>>>>>> c502f9a0aaf150257e3d73230c63d44c487c9b0d
     {
       field: "status",
       headerName: "Status",
