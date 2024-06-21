@@ -6,6 +6,7 @@ import { ParallaxProvider } from "react-scroll-parallax";
 import Welcome from "./welcome";
 import AboutUs from "./aboutus";
 import Category from "./category";
+import ContactUs from "./contactus";
 
 const Section = styled(Box)(({ theme }) => {
   const colors = tokens(theme.palette.mode);
@@ -55,6 +56,7 @@ function Home() {
           <RipPaperWrapper fillColor={colors.grey[700]} />
         </Section>
         <Section>
+          <ContactUs />
           <RipPaperWrapper fillColor={colors.primary[300]} />
         </Section>
       </ParallaxProvider>
