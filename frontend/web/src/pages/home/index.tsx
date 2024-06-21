@@ -57,7 +57,7 @@ function Home() {
         </Section>
         <Section>
           <ContactUs />
-          <RipPaperWrapper fillColor={colors.primary[300]} />
+          <RipPaperWrapper fillColor={colors.grey[100]} />
         </Section>
       </ParallaxProvider>
     </Box>

@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Topbar from "./pages/global/Topbar";
 import Home from "./pages/home";
+import Footer from "./pages/global/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -43,6 +44,7 @@ function App() {
               <Route path="/category" element={<Category />}></Route>
               <Route path="/order" element={<Order />}></Route> */}
             </Routes>
+            <Footer />
           </main>
         </div>
       </ThemeProvider>

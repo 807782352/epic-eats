@@ -13,17 +13,19 @@ const ContactUs = () => {
         <Container maxWidth="xl" sx={{ color: colors.grey[100] }}>
             <Box sx={{
                 display: "flex",
-                flexDirection: { xs: "column", md: "row" }, // 在小屏幕上垂直排列，大屏幕上水平排列
+                flexDirection: { xs: "column", md: "row" }, 
                 width: "100%",
                 height: "auto",
-                alignItems: "center",
-                justifyContent: "space-between", // 在两端对齐内容
-                gap: 2, // 设置子元素之间的间距
+                alignItems: {md: "start", xs: "center"},
+                justifyContent: "space-between",
+                gap: 10, 
+                paddingTop: {xs: 5, md: 20},
+                paddingBottom: {xs: 5, md: 20}
             }}>
-                <Box sx={{ flex: 1, marginTop: {xs: "5%", md: "2%"}, width: "60%"}}>
+                <Box sx={{ flex: 1, marginTop: {xs: "5%", md: "0%"}, width: "60%"}}>
                     <CustomMap position={position} />
                 </Box>
-                <Box sx={{ flex: 1,  marginTop: {md: "2%"}, width: "60%"}}>
+                <Box sx={{ flex: 1,  marginTop: {md: "0%"}, width: "60%"}}>
                     <ContactForm />
                 </Box>
             </Box>

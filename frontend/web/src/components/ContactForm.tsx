@@ -57,12 +57,12 @@ export default function Contact() {
   };
 
   return (
-    <Box sx={{ mt: 6, color: colors.grey[100] }}>
+    <Box sx={{ color: colors.grey[100] }}>
       <Typography variant="h3" gutterBottom sx={{
         fontSize: "2rem",
-        fontWeight: 700
+        fontWeight: 700,
       }}>
-        Contact Me
+        Contact Us
       </Typography>
       <Box
         component="form"
@@ -82,6 +82,8 @@ export default function Contact() {
           "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
             borderColor: `${colors.primary[100]} `,
           },
+          fontFamily: 'Source Sans 3, Arial, sans-serif',
+
         }}
       >
         <TextField
@@ -93,13 +95,17 @@ export default function Contact() {
           required
           InputProps={{
             style: {
-              color: colors.primary[300]
-            }
+              color: colors.primary[300],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
           InputLabelProps={{
             style: {
-              color: colors.grey[100]
-            }
+              color: colors.grey[100],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
         />
         <TextField
@@ -111,13 +117,17 @@ export default function Contact() {
           required
           InputProps={{
             style: {
-              color: colors.primary[300]
-            }
+              color: colors.primary[300],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
           InputLabelProps={{
             style: {
-              color: colors.grey[100]
-            }
+              color: colors.grey[100],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
         />
         <TextField
@@ -130,13 +140,17 @@ export default function Contact() {
           required
           InputProps={{
             style: {
-              color: colors.primary[300]
-            }
+              color: colors.primary[300],
+              fontFamily: 'Source Sans 3, Arial, sans-serif',
+              fontSize: "1.25rem",
+            },
           }}
           InputLabelProps={{
             style: {
-              color: colors.grey[100]
-            }
+              color: colors.grey[100],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
         />
         <TextField
@@ -147,13 +161,17 @@ export default function Contact() {
           onChange={(e) => onFormUpdate("phone", e.target.value)}
           InputProps={{
             style: {
-              color: colors.primary[300]
-            }
+              color: colors.primary[300],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
           InputLabelProps={{
             style: {
-              color: colors.grey[100]
-            }
+              color: colors.grey[100],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
         />
         <TextField
@@ -167,13 +185,17 @@ export default function Contact() {
           required
           InputProps={{
             style: {
-              color: colors.primary[300]
-            }
+              color: colors.primary[300],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
           InputLabelProps={{
             style: {
-              color: colors.grey[100]
-            }
+              color: colors.grey[100],
+              fontFamily: "Source Sans 3, Arial, sans-serif",
+              fontSize: "1.25rem",
+            },
           }}
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>

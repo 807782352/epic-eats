@@ -22,7 +22,10 @@ const AboutUs = () => {
           },
           gap: 2,
           width: "100%",
-          height: "90vh",
+          height: {
+            xs: "90vh",
+            md: "auto"
+          },
         }}
       >
         {/* Left side  */}

@@ -16,14 +16,29 @@ const CustomMap = ({ position }) => {
                 Location
             </Typography>
             <Typography variant='h5' marginBottom={2}>
-            Lai Xiang Hui, 2nd Floor, Entrance 4, Gold Street, Wanda Plaza, Honggutan, China.
+                Lai Xiang Hui, 2nd Floor, Entrance 4, Gold Street, Wanda Plaza, Honggutan, China.
             </Typography>
 
             <Box sx={{
                 width: '100%',
-                maxWidth: '500px'
+                maxWidth: '500px',
+                position: 'relative',
+                paddingBottom: {xs: '56.25%', md: "70%"}, // 16:9 aspect ratio
+                height: 0,
             }}>
-                <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%', borderRadius: "10px"}}>
+                <MapContainer 
+                    center={position} 
+                    zoom={13} 
+                    scrollWheelZoom={false} 
+                    style={{ 
+                        position: 'absolute', 
+                        top: 0, 
+                        left: 0, 
+                        height: '100%', 
+                        width: '100%', 
+                        borderRadius: "10px" 
+                    }}
+                >
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
