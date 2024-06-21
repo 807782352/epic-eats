@@ -98,11 +98,7 @@ const DishForm: React.FC<DishFormProps> = ({
 
   const [defaultValues, setDefaultValues] = useState({
     name: "Example",
-<<<<<<< HEAD
     categoryId: "1",
-=======
-    categoryId: "3",
->>>>>>> c502f9a0aaf150257e3d73230c63d44c487c9b0d
     price: 0,
     image: "",
     description: "",
@@ -113,11 +109,8 @@ const DishForm: React.FC<DishFormProps> = ({
   const handleImageSelect = (file: File) => {
     setSelectedImage(file);
     setImagePreviewUrl(URL.createObjectURL(file)); // Create a local URL for the selected image
-<<<<<<< HEAD
     console.log(file);
     console.log(imagePreviewUrl);
-=======
->>>>>>> c502f9a0aaf150257e3d73230c63d44c487c9b0d
   };
 
   useEffect(() => {

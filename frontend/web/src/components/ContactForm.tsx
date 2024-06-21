@@ -82,8 +82,6 @@ export default function Contact() {
           "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
             borderColor: `${colors.primary[100]} `,
           },
-          fontFamily: 'Source Sans 3, Arial, sans-serif',
-
         }}
       >
         <TextField
@@ -200,12 +198,9 @@ export default function Contact() {
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>
           {sendDataArr[sendDataIdx]}
-          {sendDataIdx === 1 && <span className="material-icons">hourglass_top</span>}
-          {sendDataIdx === 2 && <span className="material-icons">check_circle</span>}
-          {sendDataIdx === 3 && <span className="material-icons">block</span>}
         </Button>
         {status?.message && (
-          <Typography color={status.success ? colors.greenAccent[700] : colors.primary[700]}>
+          <Typography color={status.success ? colors.greenAccent[300] : colors.primary[300]} fontSize="1.5rem">
             {status.message}
           </Typography>
         )}
