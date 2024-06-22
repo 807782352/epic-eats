@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import Topbar from "./pages/global/Topbar";
 import Home from "./pages/home";
 import Footer from "./pages/global/Footer";
+import Menu from "./pages/menu";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -38,11 +39,10 @@ function App() {
             <Topbar />
             <Routes>
               <Route path="/" element={<Home />}></Route>
-              {/* <Route path="/staff" element={<Staff />}></Route>
-              <Route path="/form" element={<Form />}></Route>
-              <Route path="/dishes" element={<Dishes />}></Route>
-              <Route path="/category" element={<Category />}></Route>
-              <Route path="/order" element={<Order />}></Route> */}
+              <Route path="/home" element={<Home />}></Route>
+              <Route path="/menu/:dishId" element={<Menu />} />
+              <Route path="/menu/categoryId/:categoryId" element={<Menu />} />
+              <Route path="/menu" element={<Menu />} />
             </Routes>
             <Footer />
           </main>

@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Link } from "react-router-dom";
 
 const pages = ["Home", "Menu", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -76,6 +77,8 @@ function Topbar() {
             {pages.map((page) => (
               <Button
                 key={page}
+                component={Link}
+                to={`/${page.toLowerCase()}`}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -131,7 +134,12 @@ function Topbar() {
             }}
           >
             {pages.map((page) => (
-              <MenuItem key={page} onClick={handleCloseNavMenu}>
+              <MenuItem
+                key={page}
+                component={Link}
+                to={`/${page.toLowerCase()}`}
+                onClick={handleCloseNavMenu}
+              >
                 <Typography textAlign="center">{page}</Typography>
               </MenuItem>
             ))}
