@@ -1,6 +1,6 @@
 import "./App.css";
 import { ColorModeContext, tokens, useMode } from "./utils/theme";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -42,7 +42,7 @@ function App() {
               <Route path="/home" element={<Home />}></Route>
               <Route path="/menu/:dishId" element={<Menu />} />
               <Route path="/menu/categoryId/:categoryId" element={<Menu />} />
-              <Route path="/menu" element={<Menu />} />
+              <Route path="/menu" element={<Navigate to="/menu/categoryId/1" />} />
             </Routes>
             <Footer />
           </main>

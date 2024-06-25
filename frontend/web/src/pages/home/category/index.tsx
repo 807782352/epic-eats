@@ -11,6 +11,14 @@ import { Link } from "react-router-dom";
 const Category = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const categories = [
+    [NoodleImg, 1],
+    [PorkImg, 2],
+    [BeefImg, 3],
+    [ChickenDuckImg, 4],
+    [SeafoodImg, 5],
+    [VegetableImg, 7],
+  ]
 
   return (
     <Container maxWidth="xl">
@@ -37,8 +45,8 @@ const Category = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, // 两列布局
-          gridTemplateRows: { xs: "repeat(6, 1fr)" }, // 6行
+          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, 
+          gridTemplateRows: { xs: "repeat(6, 1fr)" }, 
           justifyContent: "center",
           alignItems: "center",
           overflow: "hidden",
@@ -47,33 +55,26 @@ const Category = () => {
           paddingBottom: 10,
         }}
       >
-        {[
-          NoodleImg,
-          PorkImg,
-          BeefImg,
-          ChickenDuckImg,
-          SeafoodImg,
-          VegetableImg,
-        ].map((img, index) => (
+        {categories.map(([categoryImg, categoryId], index) => (
           <Box
-            key={img}
+            key={categoryId}
             component={Link}
-            to="/dish"
+            to={`/menu/categoryId/${categoryId}`}
             sx={{
-              backgroundImage: `url(${img})`,
+              backgroundImage: `url(${categoryImg})`,
               backgroundSize: "101%",
               backgroundPosition: "center",
-              width: { xs: "55%", md: "80%" }, // 缩小宽度至原来的80%
+              width: { xs: "55%", md: "80%" }, 
               height: { xs: "110px", md: "150px", lg: "220px" },
-              gridColumn: { md: (index % 2) + 1 }, // 交替放置在第1列和第2列
-              gridRow: { md: index + 1 }, // 根据索引计算行
+              gridColumn: { md: (index % 2) + 1 }, 
+              gridRow: { md: index + 1 }, 
               transform: {
                 xs: index % 2 === 0 ? "translateX(-10%)" : "translateX(10%)",
-                md: index % 2 === 0 ? "translateX(30%)" : "translateX(-30%)", // 偶数左移10%，奇数右移10%
+                md: index % 2 === 0 ? "translateX(30%)" : "translateX(-30%)", 
               },
-              transition: "transform 0.3s", // 添加平滑过渡效果
+              transition: "transform 0.3s",
               padding: 10,
-              margin: "auto", // 添加自动外边距以保持居中
+              margin: "auto", 
             }}
           />
         ))}

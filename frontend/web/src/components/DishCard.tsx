@@ -51,12 +51,14 @@ export default function DishCard({ dish }) {
         <Typography
           variant="h6"
           noWrap
+          title={dish.name}
           sx={{
+            padding: 1,
             maxWidth: "70%",
             textOverflow: "ellipsis",
             overflow: "hidden",
             whiteSpace: "nowrap",
-            fontSize: dish.name.length > 40 ? "1rem" : "1.25rem",
+            fontSize: "1.25rem",
           }}
         >
           {dish.name}
@@ -96,17 +98,27 @@ export default function DishCard({ dish }) {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-      
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="h3" sx={{
-            p: 1,
-            color: colors.grey[900]
-          }}>Description:</Typography>
-          <Typography variant="h4" sx={{
-            p: 1,
-            color: colors.grey[700]
-          }}>{dish.description}</Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              p: 1,
+              color: colors.grey[900],
+            }}
+          >
+            Description:
+          </Typography>
+          <Typography
+            variant="h4"
+            sx={{
+              p: 1,
+              color: colors.grey[700],
+            }}
+          >
+            {dish.description}
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>

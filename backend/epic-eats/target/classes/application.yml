@@ -7,6 +7,12 @@ cors:
   allowed-origins: "http://localhost:5173"
   allowed-methods: "GET,POST,PUT,DELETE,PATCH"
 
+aws:
+  accessKeyId: AKIAXYKJRNJAVOHQVEJ5
+  secretKey: eb34yNnfIEFG4Dj5scAmo2MLxWd9dg3RFNoqNx
+  s3:
+    bucketName: epiceats-s3-bucket
+    region: ca-central-1
 
 
 spring:

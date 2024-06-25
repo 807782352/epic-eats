@@ -4,12 +4,6 @@ import { getDishesByCategoryId } from "../../api/dishApi";
 import { useEffect, useState } from "react";
 import { tokens } from "../../utils/theme";
 import { NavLink, useParams } from "react-router-dom";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DishCard from "../../components/DishCard";
 
 const MenuCategoryTag = ({ category }) => {
@@ -96,12 +90,15 @@ const Menu = () => {
 
   return (
     <Container maxWidth="xl">
-      <Box>
+      <Box
+        sx={{
+          py: 15,
+        }}
+      >
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
         {categories.length > 0 && (
           <Box
-            mt={50}
             sx={{
               display: "flex",
               flexWrap: "wrap",
@@ -115,22 +112,36 @@ const Menu = () => {
             ))}
           </Box>
         )}
-        {dishes.length > 0 && (
+        {
           <Box
-            mt={4}
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 5,
-            }}
-          >
-            {dishes.map((dish) => (
-              <DishCard dish={dish} key={dish.id} />
-            ))}
-          </Box>
-        )}
+          mt={4}
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 5,
+            minHeight: "50vh", 
+          }}
+        >
+          {dishes.length > 0 ? (
+            dishes.map((dish) => <DishCard dish={dish} key={dish.id} />)
+          ) : (
+            <Typography
+              key="no-data"
+              variant="h2"
+              sx={{
+                color: colors.grey[800],
+                textAlign: "center",
+                width: "100%", 
+              }}
+            >
+              The menu is still under development, so please stay tuned!
+            </Typography>
+          )}
+        </Box>
+        
+        }
       </Box>
     </Container>
   );

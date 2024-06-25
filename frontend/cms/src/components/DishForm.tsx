@@ -65,7 +65,7 @@ const validationSchema = yup.object({
   description: yup
     .string()
     .min(0, "No less than 0")
-    .max(300, "No more than 300 characters"),
+    .max(500, "No more than 500 characters"),
   code: yup
     .string()
     .min(0, "No less than 0")
@@ -133,7 +133,7 @@ const DishForm: React.FC<DishFormProps> = ({
             categoryId: dish.categoryId,
             price: dish.price,
             image: dish.image,
-            description: dish.description,
+            description: dish.description || "Please ask our servers for more details!",
             code: dish.code,
           });
           setImagePreviewUrl(dish.image);

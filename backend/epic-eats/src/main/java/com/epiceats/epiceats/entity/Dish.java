@@ -31,6 +31,7 @@ public class Dish {
 
     private String image;
 
+    @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
