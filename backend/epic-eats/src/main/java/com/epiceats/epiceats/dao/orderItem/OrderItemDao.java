@@ -9,6 +9,8 @@ public interface OrderItemDao {
     List<OrderItem> selectAllOrderItems();
 
     Optional<OrderItem> selectOrderItemById(Long id);
+
+    List<OrderItem> selectOrderItemsByOrderId(Long orderId);
     
     boolean existsOrderItemById(Long id);
 

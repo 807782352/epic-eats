@@ -26,6 +26,11 @@ public class OrderItemDaoImpl implements OrderItemDao{
     }
 
     @Override
+    public List<OrderItem> selectOrderItemsByOrderId(Long orderId) {
+        return null;
+    }
+
+    @Override
     public boolean existsOrderItemById(Long id) {
         return orderItemRepository.existsById(id);
     }
