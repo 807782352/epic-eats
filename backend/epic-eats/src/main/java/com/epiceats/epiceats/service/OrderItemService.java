@@ -3,12 +3,14 @@ package com.epiceats.epiceats.service;
 import com.epiceats.epiceats.dao.order.OrderDao;
 import com.epiceats.epiceats.dao.orderItem.OrderItemDao;
 import com.epiceats.epiceats.dto.orderItem.OrderItemRequest;
-import com.epiceats.epiceats.entity.Order;
+import com.epiceats.epiceats.entity.Orders;
 import com.epiceats.epiceats.entity.OrderItem;
 import com.epiceats.epiceats.exception.OrderItemNotFoundException;
 import com.epiceats.epiceats.exception.OrderNotFoundException;
 import com.epiceats.epiceats.exception.RequestValidationException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderItemService {
     private final OrderDao orderDao;
 
@@ -18,9 +20,6 @@ public class OrderItemService {
         this.orderDao = orderDao;
         this.orderItemDao = orderItemDao;
     }
-
-    // has already written in order request
-    // public void addOrderItem(){}
 
     public OrderItem getOrderItemById(Long orderItemId){
         return orderItemDao.selectOrderItemById(orderItemId).orElseThrow(
@@ -66,7 +65,7 @@ public class OrderItemService {
         }
 
         if (isAmountChanged) {
-            Order curOrder = orderDao.selectOrderById(curOrderItem.getOrderId()).orElseThrow(
+            Orders curOrder = orderDao.selectOrderById(curOrderItem.getOrderId()).orElseThrow(
                     () -> new OrderNotFoundException("Cannot find order with id [%s]".formatted(curOrderItem.getOrderId()))
             );
 

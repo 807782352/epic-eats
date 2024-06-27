@@ -12,6 +12,7 @@ public record OrderResponse(
         String email,
         String phone,
         List<OrderItem> orderItems,
+        String status,
         Double totalPrice,
         ZonedDateTime orderDate
 ){

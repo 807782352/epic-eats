@@ -1,8 +1,9 @@
 package com.epiceats.epiceats.controller;
 
-import com.epiceats.epiceats.dto.category.CategoryRequest;
 import com.epiceats.epiceats.dto.order.OrderRequest;
 import com.epiceats.epiceats.dto.order.OrderResponse;
+import com.epiceats.epiceats.dto.orderItem.OrderItemRequest;
+import com.epiceats.epiceats.service.OrderItemService;
 import com.epiceats.epiceats.service.OrderService;
 import com.epiceats.epiceats.utils.Result;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,15 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
+    private final OrderItemService orderItemService;
+
+    public OrderController(OrderService orderService, OrderItemService orderItemService) {
         this.orderService = orderService;
+        this.orderItemService = orderItemService;
     }
 
     @GetMapping()
-    public Result<List<OrderResponse>> getOrdersById() {
+    public Result<List<OrderResponse>> getOrders() {
         try {
             List<OrderResponse> orderResponses = orderService.getOrderResponses();
             return Result.success(orderResponses);
@@ -50,20 +54,19 @@ public class OrderController {
 
     @PutMapping("/{orderId}")
     public Result<String> updateOrder(@PathVariable("orderId") Long orderId){
-        String msg = "";
-
-        if (orderId == 1) {
-            msg = "in progress";
-        } else if (orderId == 2){
-            msg = "finished";
-        } else if (orderId == 3){
-            msg = "archived";
-        } else {
-            msg = "error";
-        }
 
         try {
-            orderService.updateOrderStatus(orderId, msg);
+            orderService.updateOrderStatus(orderId);
+            return Result.success("Update Order Status Successfully!");
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
+    }
+
+    @PutMapping("/item/{orderItemId}")
+    public Result<String> updateOrder(@PathVariable("orderItemId") Long orderItemId, @RequestBody OrderItemRequest orderItemRequest){
+        try {
+            orderItemService.updateOrderItem(orderItemId, orderItemRequest);
             return Result.success("Update Order Status Successfully!");
         } catch (Exception e) {
             return Result.error(e.getMessage());

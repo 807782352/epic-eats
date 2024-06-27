@@ -25,7 +25,8 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false, columnDefinition = "price at that period")
+    @Column(nullable = false)
+    // shows "price at that period"
     private Double price;
 
 }

@@ -6,7 +6,7 @@ import com.epiceats.epiceats.dao.staff.StaffDao;
 import com.epiceats.epiceats.dto.order.OrderResponse;
 import com.epiceats.epiceats.dto.orderItem.OrderItemRequest;
 import com.epiceats.epiceats.dto.order.OrderRequest;
-import com.epiceats.epiceats.entity.Order;
+import com.epiceats.epiceats.entity.Orders;
 import com.epiceats.epiceats.entity.OrderItem;
 import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.exception.OrderNotFoundException;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
-
     private final OrderDao orderDao;
 
     private final OrderItemDao orderItemDao;
@@ -34,13 +34,14 @@ public class OrderService {
     }
 
     public void addOrder(OrderRequest orderRequest) {
-        Order order = new Order();
+        Orders order = new Orders();
         order.setTotalPrice(orderRequest.totalPrice());
+        order.setUserId(orderRequest.userId());
         order.setStatus("in progress");
         order.setOrderDate(ZonedDateTime.now());
 
         try {
-            Order savedOrder = orderDao.insertOrder(order);
+            Orders savedOrder = orderDao.insertOrder(order);
             for (OrderItemRequest orderItemRequest : orderRequest.orderItems()){
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrderId(savedOrder.getOrderId());
@@ -50,18 +51,19 @@ public class OrderService {
                 orderItemDao.insertOrderItem(orderItem);
             }
         } catch (Exception e) {
+            System.err.println(e);
             throw new RequestValidationException("There is something conflict about the order");
         }
     }
 
-    public Order getOrderById(Long orderId){
+    public Orders getOrderById(Long orderId){
         return orderDao.selectOrderById(orderId).orElseThrow(
                 () -> new OrderNotFoundException("Order with id [%s] is not found!".formatted(orderId))
         );
     }
 
     public List<OrderResponse> getOrderResponses() {
-        List<Order> allOrders = orderDao.selectAllOrders();
+        List<Orders> allOrders = orderDao.selectAllOrders();
 
         return allOrders.stream().map(order -> {
             Long orderId = order.getOrderId();
@@ -74,12 +76,12 @@ public class OrderService {
             List<OrderItem> orderItems = orderItemDao.selectOrderItemsByOrderId(orderId);
 
             return new OrderResponse(orderId, userId, curStaff.getFirstName() + " " + curStaff.getLastName(), curStaff.getEmail(),
-                    curStaff.getPhone(), orderItems, order.getTotalPrice(), order.getOrderDate());
+                    curStaff.getPhone(), orderItems, order.getStatus(), order.getTotalPrice(), order.getOrderDate());
         }).collect(Collectors.toList());
     }
 
     public OrderResponse getOrderResponseById(Long orderId){
-        Order curOrder = getOrderById(orderId);
+        Orders curOrder = getOrderById(orderId);
         Long userId = curOrder.getUserId();
 
         Staff curStaff = staffDao.selectStaffById(userId).orElseThrow(
@@ -87,14 +89,35 @@ public class OrderService {
         );
 
         List<OrderItem> orderItems = orderItemDao.selectOrderItemsByOrderId(orderId);
+        System.out.println(orderItems);
 
 
         return new OrderResponse(orderId, userId, curStaff.getFirstName() + " " + curStaff.getLastName(), curStaff.getEmail(),
-                curStaff.getPhone(), orderItems, curOrder.getTotalPrice(), curOrder.getOrderDate());
+                curStaff.getPhone(), orderItems, curOrder.getStatus(), curOrder.getTotalPrice(), curOrder.getOrderDate());
     }
 
-    public void updateOrderStatus(Long orderId, String msg){
-        Order curOrder = getOrderById(orderId);
+    public void updateOrderStatus(Long orderId) {
+        String msg = "";
+
+        Orders curOrder = getOrderById(orderId);
+
+        String curStatus = curOrder.getStatus();
+
+        switch (curStatus) {
+            case "in progress":
+                msg = "finished";
+                break;
+            case "finished":
+                msg = "archived";
+                break;
+            default:
+                msg = "error";
+        }
+
+        updateOrderStatus(curOrder, msg);
+    }
+
+    public void updateOrderStatus(Orders curOrder, String msg){
 
         if (curOrder.getStatus() != null && !curOrder.getStatus().equals(msg)){
             curOrder.setStatus(msg);
@@ -104,6 +127,7 @@ public class OrderService {
     }
 
     public void deleteOrderStatus(Long orderId){
-        updateOrderStatus(orderId, "archived");
+        Orders curOrder = getOrderById(orderId);
+        updateOrderStatus(curOrder, "archived");
     }
 }

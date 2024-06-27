@@ -1,6 +1,6 @@
 package com.epiceats.epiceats.dao.order;
 
-import com.epiceats.epiceats.entity.Order;
+import com.epiceats.epiceats.entity.Orders;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,12 +16,12 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public List<Order> selectAllOrders() {
+    public List<Orders> selectAllOrders() {
         return orderRepository.findAll();
     }
 
     @Override
-    public Optional<Order> selectOrderById(Long id) {
+    public Optional<Orders> selectOrderById(Long id) {
         return orderRepository.findById(id);
     }
 
@@ -31,12 +31,12 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public Order insertOrder(Order order) {
+    public Orders insertOrder(Orders order) {
         return orderRepository.save(order);
     }
 
     @Override
-    public void updateOrder(Order order) {
+    public void updateOrder(Orders order) {
         orderRepository.save(order);
     }
 }
