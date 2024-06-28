@@ -3,6 +3,8 @@ package com.epiceats.epiceats.controller;
 import com.epiceats.epiceats.dto.order.OrderRequest;
 import com.epiceats.epiceats.dto.order.OrderResponse;
 import com.epiceats.epiceats.dto.orderItem.OrderItemRequest;
+import com.epiceats.epiceats.dto.orderItem.OrderItemResponse;
+import com.epiceats.epiceats.entity.OrderItem;
 import com.epiceats.epiceats.service.OrderItemService;
 import com.epiceats.epiceats.service.OrderService;
 import com.epiceats.epiceats.utils.Result;
@@ -42,6 +44,16 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/item/{orderId}")
+    public Result<List<OrderItemResponse>> getOrderItemsById(@PathVariable("orderId") Long orderId) {
+        try {
+            List<OrderItemResponse> orderItemsByOrderId = orderItemService.getOrderItemsByOrderId(orderId);
+            return Result.success(orderItemsByOrderId);
+        } catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+    }
+
     @PostMapping()
     public Result<String> addOrder(@RequestBody OrderRequest orderRequest){
         try {
@@ -64,7 +76,7 @@ public class OrderController {
     }
 
     @PutMapping("/item/{orderItemId}")
-    public Result<String> updateOrder(@PathVariable("orderItemId") Long orderItemId, @RequestBody OrderItemRequest orderItemRequest){
+    public Result<String> updateOrderItem(@PathVariable("orderItemId") Long orderItemId, @RequestBody OrderItemRequest orderItemRequest){
         try {
             orderItemService.updateOrderItem(orderItemId, orderItemRequest);
             return Result.success("Update Order Status Successfully!");

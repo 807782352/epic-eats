@@ -2,7 +2,6 @@ package com.epiceats.epiceats.dto.order;
 
 import com.epiceats.epiceats.entity.OrderItem;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public record OrderResponse(
@@ -14,6 +13,6 @@ public record OrderResponse(
         List<OrderItem> orderItems,
         String status,
         Double totalPrice,
-        ZonedDateTime orderDate
+        String orderDate
 ){
 }

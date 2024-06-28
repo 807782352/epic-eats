@@ -6,15 +6,10 @@ const ImageUpload = ({ onSelectImage }) => {
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
-<<<<<<< HEAD
     if (selectedImage) {
       setImage(selectedImage);
       onSelectImage(selectedImage);
     }
-=======
-    setImage(selectedImage);
-    onSelectImage(selectedImage);
->>>>>>> c502f9a0aaf150257e3d73230c63d44c487c9b0d
   };
 
   return (

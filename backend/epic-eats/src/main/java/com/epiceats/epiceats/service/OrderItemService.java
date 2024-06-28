@@ -1,14 +1,22 @@
 package com.epiceats.epiceats.service;
 
+import com.epiceats.epiceats.dao.dish.DishDao;
 import com.epiceats.epiceats.dao.order.OrderDao;
 import com.epiceats.epiceats.dao.orderItem.OrderItemDao;
 import com.epiceats.epiceats.dto.orderItem.OrderItemRequest;
+import com.epiceats.epiceats.dto.orderItem.OrderItemResponse;
+import com.epiceats.epiceats.entity.Dish;
 import com.epiceats.epiceats.entity.Orders;
 import com.epiceats.epiceats.entity.OrderItem;
+import com.epiceats.epiceats.exception.DishNotFoundException;
 import com.epiceats.epiceats.exception.OrderItemNotFoundException;
 import com.epiceats.epiceats.exception.OrderNotFoundException;
 import com.epiceats.epiceats.exception.RequestValidationException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderItemService {
@@ -16,15 +24,39 @@ public class OrderItemService {
 
     private final OrderItemDao orderItemDao;
 
-    public OrderItemService(OrderDao orderDao, OrderItemDao orderItemDao) {
+    private final DishDao dishDao;
+
+    public OrderItemService(OrderDao orderDao, OrderItemDao orderItemDao, DishDao dishDao) {
         this.orderDao = orderDao;
         this.orderItemDao = orderItemDao;
+        this.dishDao = dishDao;
     }
 
     public OrderItem getOrderItemById(Long orderItemId){
         return orderItemDao.selectOrderItemById(orderItemId).orElseThrow(
                 () -> new OrderItemNotFoundException("Order Item with id [%s] is not found!".formatted(orderItemId))
         );
+    }
+
+    public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
+        List<OrderItem> orderItems = orderItemDao.selectOrderItemsByOrderId(orderId);
+        List<OrderItemResponse> responseList = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+            Long dishId = orderItem.getDishId();
+            Dish dish = dishDao.selectDishById(dishId).orElseThrow(() -> new DishNotFoundException("Dish with id [%s] is not found!".formatted(dishId)));
+
+            OrderItemResponse response = new OrderItemResponse(
+                    dishId,
+                    dish.getName(),
+                    orderItem.getQuantity(),
+                    orderItem.getPrice()
+            );
+
+            responseList.add(response);
+        }
+
+        return responseList;
     }
 
     public void updateOrderItem(Long orderItemId, OrderItemRequest orderItemRequest){

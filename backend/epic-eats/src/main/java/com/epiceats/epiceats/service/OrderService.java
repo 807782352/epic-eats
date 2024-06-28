@@ -12,11 +12,11 @@ import com.epiceats.epiceats.entity.Staff;
 import com.epiceats.epiceats.exception.OrderNotFoundException;
 import com.epiceats.epiceats.exception.RequestValidationException;
 import com.epiceats.epiceats.exception.StaffNotFoundException;
+import com.epiceats.epiceats.utils.DateTimeUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,7 +76,7 @@ public class OrderService {
             List<OrderItem> orderItems = orderItemDao.selectOrderItemsByOrderId(orderId);
 
             return new OrderResponse(orderId, userId, curStaff.getFirstName() + " " + curStaff.getLastName(), curStaff.getEmail(),
-                    curStaff.getPhone(), orderItems, order.getStatus(), order.getTotalPrice(), order.getOrderDate());
+                    curStaff.getPhone(), orderItems, order.getStatus(), order.getTotalPrice(), order.getOrderDate().format(DateTimeUtils.FORMATTER));
         }).collect(Collectors.toList());
     }
 
@@ -93,7 +93,7 @@ public class OrderService {
 
 
         return new OrderResponse(orderId, userId, curStaff.getFirstName() + " " + curStaff.getLastName(), curStaff.getEmail(),
-                curStaff.getPhone(), orderItems, curOrder.getStatus(), curOrder.getTotalPrice(), curOrder.getOrderDate());
+                curStaff.getPhone(), orderItems, curOrder.getStatus(), curOrder.getTotalPrice(), curOrder.getOrderDate().format(DateTimeUtils.FORMATTER));
     }
 
     public void updateOrderStatus(Long orderId) {
@@ -105,6 +105,7 @@ public class OrderService {
 
         switch (curStatus) {
             case "in progress":
+            case "archived":
                 msg = "finished";
                 break;
             case "finished":
