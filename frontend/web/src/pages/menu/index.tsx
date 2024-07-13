@@ -121,7 +121,7 @@ const Menu = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: 5,
-            minHeight: "50vh", 
+            minHeight: "40vh", 
           }}
         >
           {dishes.length > 0 ? (

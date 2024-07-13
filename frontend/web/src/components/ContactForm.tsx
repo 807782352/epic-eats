@@ -58,10 +58,14 @@ export default function Contact() {
 
   return (
     <Box sx={{ color: colors.grey[100] }}>
-      <Typography variant="h3" gutterBottom sx={{
-        fontSize: "2rem",
-        fontWeight: 700,
-      }}>
+      <Typography
+        variant="h3"
+        gutterBottom
+        sx={{
+          fontSize: "2rem",
+          fontWeight: 700,
+        }}
+      >
         Contact Us
       </Typography>
       <Box
@@ -79,9 +83,10 @@ export default function Contact() {
           "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: `${colors.primary[300]} `,
           },
-          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: `${colors.primary[100]} `,
-          },
+          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+            {
+              borderColor: `${colors.primary[100]} `,
+            },
         }}
       >
         <TextField
@@ -103,6 +108,8 @@ export default function Contact() {
               color: colors.grey[100],
               fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
+              paddingRight: 2,
+
             },
           }}
         />
@@ -125,6 +132,8 @@ export default function Contact() {
               color: colors.grey[100],
               fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
+              paddingRight: 2,
+
             },
           }}
         />
@@ -139,7 +148,7 @@ export default function Contact() {
           InputProps={{
             style: {
               color: colors.primary[300],
-              fontFamily: 'Source Sans 3, Arial, sans-serif',
+              fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
             },
           }}
@@ -148,6 +157,7 @@ export default function Contact() {
               color: colors.grey[100],
               fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
+              paddingRight: 2,
             },
           }}
         />
@@ -169,6 +179,7 @@ export default function Contact() {
               color: colors.grey[100],
               fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
+              paddingRight: 2,
             },
           }}
         />
@@ -193,6 +204,8 @@ export default function Contact() {
               color: colors.grey[100],
               fontFamily: "Source Sans 3, Arial, sans-serif",
               fontSize: "1.25rem",
+              paddingRight: 2,
+              
             },
           }}
         />
@@ -200,7 +213,12 @@ export default function Contact() {
           {sendDataArr[sendDataIdx]}
         </Button>
         {status?.message && (
-          <Typography color={status.success ? colors.greenAccent[300] : colors.primary[300]} fontSize="1.5rem">
+          <Typography
+            color={
+              status.success ? colors.greenAccent[300] : colors.primary[300]
+            }
+            fontSize="1.5rem"
+          >
             {status.message}
           </Typography>
         )}

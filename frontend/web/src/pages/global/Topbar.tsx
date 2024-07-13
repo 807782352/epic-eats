@@ -14,6 +14,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import { useTheme } from "@mui/material";
+import { tokens } from "../../utils/theme";
 
 const pages = ["Home", "Menu", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -38,6 +41,14 @@ function Topbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const { state } = useCart();
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode)
+
+  // Calculate the sum of all amounts of the dishes
+  const totalQuantity = state.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <AppBar position="fixed">
@@ -95,8 +106,27 @@ function Topbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0, display: "flex" }}>
-            <IconButton size="large" color="inherit">
-              <Badge badgeContent={4} color="error">
+            <IconButton
+              size="large"
+              color="inherit"
+              component={Link}
+              to={`/cart`}
+            >
+              <Badge
+                badgeContent={totalQuantity}
+                color="error"
+                sx={{
+                  '& .MuiBadge-badge': {
+                    fontSize: '1rem',
+                    paddingRight: 1,
+                    minWidth: '22px',
+                    height: '22px',
+                    borderRadius: '11px',
+                    backgroundColor: colors.redAccent[500],
+                    color: colors.primary[1000],
+                  },
+                }}
+              >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
