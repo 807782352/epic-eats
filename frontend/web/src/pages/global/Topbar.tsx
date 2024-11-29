@@ -45,10 +45,12 @@ function Topbar() {
   const { state } = useCart();
 
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode)
+  const colors = tokens(theme.palette.mode);
 
   // Calculate the sum of all amounts of the dishes
-  const totalQuantity = state.items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = Array.isArray(state?.items)
+    ? state.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
+    : 0;
 
   return (
     <AppBar position="fixed">
@@ -116,12 +118,12 @@ function Topbar() {
                 badgeContent={totalQuantity}
                 color="error"
                 sx={{
-                  '& .MuiBadge-badge': {
-                    fontSize: '1rem',
+                  "& .MuiBadge-badge": {
+                    fontSize: "1rem",
                     paddingRight: 1,
-                    minWidth: '22px',
-                    height: '22px',
-                    borderRadius: '11px',
+                    minWidth: "22px",
+                    height: "22px",
+                    borderRadius: "11px",
                     backgroundColor: colors.redAccent[500],
                     color: colors.primary[1000],
                   },
